@@ -9,10 +9,8 @@ import requests
 from src.config import SLACK_WEBHOOK_URL
 
 
-def send(ga4: dict, shopify: dict, meta: dict, qb: dict | None = None) -> None:
+def send(ga4: dict, shopify: dict, meta: dict) -> None:
     """Post a formatted KPI summary to Slack."""
-    qb = qb or {}
-
     if not SLACK_WEBHOOK_URL:
         print("  [Slack] Skipped — webhook URL not configured.")
         return
@@ -63,20 +61,6 @@ def send(ga4: dict, shopify: dict, meta: dict, qb: dict | None = None) -> None:
                     f">  Spend: *${meta.get('spend', 0):,.2f}*\n"
                     f">  ROAS: *{meta.get('roas', 0):.2f}x*\n"
                     f">  CPA: *${meta.get('cpa', 0):,.2f}*"
-                ),
-            },
-        },
-        {"type": "divider"},
-        # --- QuickBooks ---
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": (
-                    "*:ledger: QuickBooks*\n"
-                    f">  Revenue: *${qb.get('revenue', 0):,.2f}*\n"
-                    f">  Expenses: *${qb.get('expenses', 0):,.2f}*\n"
-                    f">  Net Income: *${qb.get('net_income', 0):,.2f}*"
                 ),
             },
         },

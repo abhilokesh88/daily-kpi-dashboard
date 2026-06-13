@@ -12,9 +12,8 @@ from jinja2 import Environment, FileSystemLoader
 from src.config import OUTPUT_DIR, TEMPLATE_DIR
 
 
-def build(ga4: dict, shopify: dict, meta: dict, history: list[dict], qb: dict | None = None) -> None:
+def build(ga4: dict, shopify: dict, meta: dict, history: list[dict]) -> None:
     """Render the dashboard HTML from the Jinja2 template."""
-    qb = qb or {}
     os.makedirs(os.path.join(OUTPUT_DIR, "assets"), exist_ok=True)
 
     env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
@@ -26,7 +25,6 @@ def build(ga4: dict, shopify: dict, meta: dict, history: list[dict], qb: dict | 
         ga4=ga4,
         shopify=shopify,
         meta=meta,
-        qb=qb,
         history=history,
         has_trends=len(history) >= 2,
     )

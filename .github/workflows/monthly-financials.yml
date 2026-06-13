@@ -1,0 +1,44 @@
+name: Monthly Financial Report
+
+on:
+  schedule:
+    # Runs on the 7th of every month at 8:00 AM UTC (3:00 AM EST)
+    - cron: "0 8 7 * *"
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  monthly-report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run monthly report
+        env:
+          QB_CLIENT_ID: ${{ secrets.QB_CLIENT_ID }}
+          QB_CLIENT_SECRET: ${{ secrets.QB_CLIENT_SECRET }}
+          QB_REFRESH_TOKEN: ${{ secrets.QB_REFRESH_TOKEN }}
+          QB_REALM_ID: ${{ secrets.QB_REALM_ID }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: python run_monthly.py
+
+      - name: Commit & push monthly report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/
+          git diff --staged --quiet || git commit -m "Update monthly P&L — $(date -u +'%Y-%m-%d')"
+          git push

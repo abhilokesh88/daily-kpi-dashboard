@@ -1,14 +1,11 @@
 """
-Pull financial KPIs from QuickBooks Online API.
+Pull monthly P&L from QuickBooks Online API.
 
-Metrics:
-  - Revenue (Income)
-  - Expenses
-  - Net Income (Profit)
+Fetches the full Profit & Loss report for a given month.
+Used by the monthly financial report (run_monthly.py), not the daily dashboard.
 """
 
 import base64
-import json
 import os
 from datetime import date, timedelta
 
@@ -29,20 +26,23 @@ BASE_URL = {
 }
 
 
-def fetch(target_date: date | None = None) -> dict:
-    """Return a dict with revenue, expenses, net_income for *target_date*."""
+def fetch_month(year: int, month: int) -> dict:
+    """Return P&L data for an entire month: revenue, expenses, net_income."""
 
     if not QB_CLIENT_ID or not QB_REFRESH_TOKEN or not QB_REALM_ID:
         print("  [QuickBooks] Skipped — credentials not configured.")
-        return _empty()
+        return _empty(year, month)
 
-    target = target_date or date.today() - timedelta(days=1)
-    date_str = target.strftime("%Y-%m-%d")
+    start = date(year, month, 1)
+    if month == 12:
+        end = date(year, 12, 31)
+    else:
+        end = date(year, month + 1, 1) - timedelta(days=1)
 
     access_token = _refresh_access_token()
     if not access_token:
         print("  [QuickBooks] Failed to refresh access token.")
-        return _empty(date_str)
+        return _empty(year, month)
 
     base = BASE_URL.get(QB_ENVIRONMENT, BASE_URL["production"])
     url = f"{base}/v3/company/{QB_REALM_ID}/reports/ProfitAndLoss"
@@ -51,8 +51,8 @@ def fetch(target_date: date | None = None) -> dict:
         "Accept": "application/json",
     }
     params = {
-        "start_date": date_str,
-        "end_date": date_str,
+        "start_date": start.strftime("%Y-%m-%d"),
+        "end_date": end.strftime("%Y-%m-%d"),
         "minorversion": "65",
     }
 
@@ -62,18 +62,19 @@ def fetch(target_date: date | None = None) -> dict:
 
     revenue, expenses, net_income = _parse_pnl(report)
 
+    month_label = start.strftime("%B %Y")
+    print(f"  [QuickBooks] {month_label}: Revenue=${revenue:,.2f}  Expenses=${expenses:,.2f}  Net=${net_income:,.2f}")
+
     return {
-        "date": date_str,
+        "month": start.strftime("%Y-%m"),
+        "month_label": month_label,
         "revenue": round(revenue, 2),
         "expenses": round(expenses, 2),
         "net_income": round(net_income, 2),
     }
 
 
-# --- helpers ---------------------------------------------------------------
-
 def _refresh_access_token() -> str | None:
-    """Exchange the refresh token for a new access token."""
     url = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
 
     auth_str = f"{QB_CLIENT_ID}:{QB_CLIENT_SECRET}"
@@ -104,7 +105,6 @@ def _refresh_access_token() -> str | None:
 
 
 def _save_new_refresh_token(new_token: str) -> None:
-    """Update the GitHub secret with the new refresh token via env marker file."""
     marker_path = os.path.join(
         os.path.dirname(os.path.dirname(__file__)), "data", ".new_qb_refresh_token"
     )
@@ -115,7 +115,6 @@ def _save_new_refresh_token(new_token: str) -> None:
 
 
 def _parse_pnl(report: dict) -> tuple[float, float, float]:
-    """Extract revenue, expenses, net income from QBO P&L report JSON."""
     revenue = 0.0
     expenses = 0.0
     net_income = 0.0
@@ -144,9 +143,10 @@ def _parse_pnl(report: dict) -> tuple[float, float, float]:
     return revenue, expenses, net_income
 
 
-def _empty(date_str: str = "") -> dict:
+def _empty(year: int, month: int) -> dict:
     return {
-        "date": date_str,
+        "month": f"{year:04d}-{month:02d}",
+        "month_label": date(year, month, 1).strftime("%B %Y"),
         "revenue": 0.0,
         "expenses": 0.0,
         "net_income": 0.0,

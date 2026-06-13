@@ -27,16 +27,11 @@ FIELDS = [
     "meta_spend",
     "meta_roas",
     "meta_cpa",
-    # QuickBooks
-    "qb_revenue",
-    "qb_expenses",
-    "qb_net_income",
 ]
 
 
-def save(ga4: dict, shopify: dict, meta: dict, qb: dict | None = None) -> None:
+def save(ga4: dict, shopify: dict, meta: dict) -> None:
     """Append one row to the history CSV."""
-    qb = qb or {}
     file_exists = os.path.isfile(HISTORY_FILE)
 
     row = {
@@ -50,9 +45,6 @@ def save(ga4: dict, shopify: dict, meta: dict, qb: dict | None = None) -> None:
         "meta_spend": meta.get("spend", 0),
         "meta_roas": meta.get("roas", 0),
         "meta_cpa": meta.get("cpa", 0),
-        "qb_revenue": qb.get("revenue", 0),
-        "qb_expenses": qb.get("expenses", 0),
-        "qb_net_income": qb.get("net_income", 0),
     }
 
     os.makedirs(DATA_DIR, exist_ok=True)

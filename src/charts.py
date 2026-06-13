@@ -92,27 +92,6 @@ def generate_all(history: list[dict]) -> None:
             "color": "#F7B928",
             "fmt": "${:,.2f}",
         },
-        {
-            "filename": "qb_revenue.png",
-            "title": "QuickBooks — Revenue ($)",
-            "values": [r.get("qb_revenue", 0) for r in history],
-            "color": "#2CA01C",
-            "fmt": "${:,.2f}",
-        },
-        {
-            "filename": "qb_expenses.png",
-            "title": "QuickBooks — Expenses ($)",
-            "values": [r.get("qb_expenses", 0) for r in history],
-            "color": "#D94B38",
-            "fmt": "${:,.2f}",
-        },
-        {
-            "filename": "qb_net_income.png",
-            "title": "QuickBooks — Net Income ($)",
-            "values": [r.get("qb_net_income", 0) for r in history],
-            "color": "#393B79",
-            "fmt": "${:,.2f}",
-        },
     ]
 
     for cfg in chart_configs:
