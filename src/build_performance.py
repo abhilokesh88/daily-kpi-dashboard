@@ -13,6 +13,7 @@ from datetime import datetime
 from jinja2 import Environment, FileSystemLoader
 
 from src.config import OUTPUT_DIR, TEMPLATE_DIR
+from src import performance_storage
 
 
 def build_performance(ga4: dict, shopify: dict, meta: dict) -> None:
@@ -58,16 +59,20 @@ def build_performance(ga4: dict, shopify: dict, meta: dict) -> None:
         "video_25": video_25,
     }
 
+    report_date = ga4.get("date") or shopify.get("date") or meta.get("date") or "N/A"
+
+    performance_storage.save(report_date, raw, kpis)
+    history = performance_storage.load_history()
+
     env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
     template = env.get_template("performance.html")
-
-    report_date = ga4.get("date") or shopify.get("date") or meta.get("date") or "N/A"
 
     html = template.render(
         report_date=report_date,
         generated_at=datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC"),
         kpis=kpis,
         raw=raw,
+        history=history,
     )
 
     out_path = os.path.join(OUTPUT_DIR, "performance.html")
