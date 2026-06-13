@@ -45,6 +45,7 @@ def fetch(target_date: date | None = None) -> dict:
             Metric(name="sessions"),
             Metric(name="ecommercePurchases"),
             Metric(name="purchaseRevenue"),
+            Metric(name="addToCarts"),
         ],
     )
 
@@ -58,6 +59,7 @@ def fetch(target_date: date | None = None) -> dict:
     sessions = int(row.metric_values[0].value)
     purchases = int(row.metric_values[1].value)
     revenue = float(row.metric_values[2].value)
+    add_to_carts = int(row.metric_values[3].value)
     conversion_rate = (purchases / sessions * 100) if sessions > 0 else 0.0
 
     return {
@@ -65,6 +67,7 @@ def fetch(target_date: date | None = None) -> dict:
         "sessions": sessions,
         "conversion_rate": round(conversion_rate, 2),
         "revenue": round(revenue, 2),
+        "add_to_carts": add_to_carts,
     }
 
 
@@ -86,4 +89,5 @@ def _empty(date_str: str = "") -> dict:
         "sessions": 0,
         "conversion_rate": 0.0,
         "revenue": 0.0,
+        "add_to_carts": 0,
     }
