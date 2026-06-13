@@ -47,6 +47,8 @@ def save(ga4: dict, shopify: dict, meta: dict) -> None:
         "meta_cpa": meta.get("cpa", 0),
     }
 
+    os.makedirs(DATA_DIR, exist_ok=True)
+
     with open(HISTORY_FILE, "a", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=FIELDS)
         if not file_exists:
