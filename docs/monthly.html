@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monthly P&L — May 2026</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card: #1a1d27;
+      --border: #2a2d3a;
+      --text: #e4e4e7;
+      --muted: #8b8d98;
+      --green: #2CA01C;
+      --red: #D94B38;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    header h1 { font-size: 1.8rem; font-weight: 700; }
+    header p { color: var(--muted); margin-top: 0.25rem; font-size: 0.9rem; }
+    .month-badge {
+      display: inline-block;
+      background: var(--green);
+      color: white;
+      padding: 0.3rem 1rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .pnl-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .pnl-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .pnl-card .label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .pnl-card .value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-top: 0.25rem;
+    }
+    .pnl-card.revenue .value { color: var(--green); }
+    .pnl-card.expenses .value { color: var(--red); }
+    .pnl-card.net .value {
+      color: var(--red);
+    }
+
+    .nav-link {
+      display: inline-block;
+      margin-top: 2rem;
+      color: #2563eb;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .nav-link:hover { text-decoration: underline; }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span class="month-badge">May 2026</span>
+    <h1>Monthly P&L Report</h1>
+    <p>Generated 2026-06-13 10:35 UTC</p>
+  </header>
+
+  <div class="pnl-grid">
+    <div class="pnl-card revenue">
+      <div class="label">Revenue</div>
+      <div class="value">$6,566.07</div>
+    </div>
+    <div class="pnl-card expenses">
+      <div class="label">Expenses</div>
+      <div class="value">$8,192.25</div>
+    </div>
+    <div class="pnl-card net">
+      <div class="label">Net Income</div>
+      <div class="value">$-4,171.71</div>
+    </div>
+    <div class="pnl-card">
+      <div class="label">Margin</div>
+      <div class="value">-63.5%</div>
+    </div>
+  </div>
+
+  <div style="text-align: center;">
+    <a class="nav-link" href="index.html">&larr; Back to Daily Dashboard</a>
+  </div>
+
+  <footer>
+    Powered by GitHub Actions &middot; Data from QuickBooks Online
+  </footer>
+
+</body>
+</html>
