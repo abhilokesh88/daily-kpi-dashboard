@@ -36,6 +36,10 @@ jobs:
           SHOPIFY_ACCESS_TOKEN: ${{ secrets.SHOPIFY_ACCESS_TOKEN }}
           META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
           META_AD_ACCOUNT_ID: ${{ secrets.META_AD_ACCOUNT_ID }}
+          QB_CLIENT_ID: ${{ secrets.QB_CLIENT_ID }}
+          QB_CLIENT_SECRET: ${{ secrets.QB_CLIENT_SECRET }}
+          QB_REFRESH_TOKEN: ${{ secrets.QB_REFRESH_TOKEN }}
+          QB_REALM_ID: ${{ secrets.QB_REALM_ID }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: python run.py
 

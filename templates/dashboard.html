@@ -14,6 +14,7 @@
       --ga4: #4285F4;
       --shopify: #96BF48;
       --meta: #1877F2;
+      --qb: #2CA01C;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -187,6 +188,26 @@
     </div>
   </div>
 
+  <!-- QuickBooks -->
+  <div class="section-title">
+    <span class="dot" style="background: var(--qb)"></span>
+    QuickBooks
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="label">Revenue</div>
+      <div class="value">${{ "{:,.2f}".format(qb.revenue | default(0) | float) }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Expenses</div>
+      <div class="value">${{ "{:,.2f}".format(qb.expenses | default(0) | float) }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Net Income</div>
+      <div class="value">${{ "{:,.2f}".format(qb.net_income | default(0) | float) }}</div>
+    </div>
+  </div>
+
   <!-- Trend Charts -->
   <div class="trends">
     <h2>Trends</h2>
@@ -201,6 +222,9 @@
       <div class="chart-card"><img src="assets/meta_spend.png" alt="Meta Spend"></div>
       <div class="chart-card"><img src="assets/meta_roas.png" alt="Meta ROAS"></div>
       <div class="chart-card"><img src="assets/meta_cpa.png" alt="Meta CPA"></div>
+      <div class="chart-card"><img src="assets/qb_revenue.png" alt="QuickBooks Revenue"></div>
+      <div class="chart-card"><img src="assets/qb_expenses.png" alt="QuickBooks Expenses"></div>
+      <div class="chart-card"><img src="assets/qb_net_income.png" alt="QuickBooks Net Income"></div>
     </div>
     {% else %}
     <div class="empty-state">
@@ -210,7 +234,7 @@
   </div>
 
   <footer>
-    Powered by GitHub Actions &middot; Data from GA4, Shopify &amp; Meta
+    Powered by GitHub Actions &middot; Data from GA4, Shopify, Meta &amp; QuickBooks
   </footer>
 
 </body>
