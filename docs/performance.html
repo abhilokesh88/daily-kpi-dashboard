@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Performance Log — 2026-06-12</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card: #1a1d27;
+      --border: #2a2d3a;
+      --text: #e4e4e7;
+      --muted: #8b8d98;
+      --green: #2CA01C;
+      --red: #D94B38;
+      --blue: #2563eb;
+      --yellow: #F7B928;
+      --purple: #7C3AED;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    header { text-align: center; margin-bottom: 2rem; }
+    header h1 { font-size: 1.8rem; font-weight: 700; }
+    header p { color: var(--muted); margin-top: 0.25rem; font-size: 0.9rem; }
+    .date-badge {
+      display: inline-block;
+      background: var(--blue);
+      color: white;
+      padding: 0.3rem 1rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 2rem 0 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .section-title .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .kpi-card .label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .kpi-card .value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-top: 0.25rem;
+    }
+    .kpi-card .formula {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 0.4rem;
+      font-style: italic;
+    }
+
+    /* Raw data table */
+    .raw-section { margin-top: 2.5rem; }
+    .raw-section h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+    .raw-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.75rem;
+    }
+    .raw-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem;
+      text-align: center;
+    }
+    .raw-card .label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .raw-card .value {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: 0.15rem;
+    }
+    .source-tag {
+      display: inline-block;
+      font-size: 0.6rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      font-weight: 600;
+      margin-top: 0.3rem;
+    }
+    .source-ga4 { background: rgba(66,133,244,0.2); color: #4285F4; }
+    .source-shopify { background: rgba(150,191,72,0.2); color: #96BF48; }
+    .source-meta { background: rgba(24,119,242,0.2); color: #1877F2; }
+
+    .nav-link {
+      display: inline-block;
+      margin-top: 2rem;
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .nav-link:hover { text-decoration: underline; }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span class="date-badge">2026-06-12</span>
+    <h1>Daily Performance Log</h1>
+    <p>Calculated KPIs &middot; Generated 2026-06-13 13:45 UTC</p>
+  </header>
+
+  <!-- ECONOMICS -->
+  <div class="section-title">
+    <span class="dot" style="background: var(--green)"></span>
+    Economics
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="label">MER</div>
+      <div class="value">0.49x</div>
+      <div class="formula">Revenue &divide; Spend</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">CPP</div>
+      <div class="value">$74.06</div>
+      <div class="formula">Spend &divide; Purchases</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">CTR (Link)</div>
+      <div class="value">3.31%</div>
+      <div class="formula">Link Clicks &divide; Impressions</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">CVR</div>
+      <div class="value">0.72%</div>
+      <div class="formula">Orders &divide; Sessions</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">ATC Rate</div>
+      <div class="value">2.88%</div>
+      <div class="formula">Add to Carts &divide; Sessions</div>
+    </div>
+  </div>
+
+  <!-- FUNNEL -->
+  <div class="section-title">
+    <span class="dot" style="background: var(--yellow)"></span>
+    Funnel
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="label">Frequency</div>
+      <div class="value">1.1x</div>
+      <div class="formula">Impressions &divide; Reach</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">CPM</div>
+      <div class="value">$44.98</div>
+      <div class="formula">Spend &divide; Impressions &times; 1000</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">CPC</div>
+      <div class="value">$1.36</div>
+      <div class="formula">Spend &divide; Link Clicks</div>
+    </div>
+  </div>
+
+  <!-- CREATIVE -->
+  <div class="section-title">
+    <span class="dot" style="background: var(--purple)"></span>
+    Creative
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="label">Hook Rate</div>
+      <div class="value">3.6%</div>
+      <div class="formula">3-Sec Plays &divide; Impressions</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Hold Rate</div>
+      <div class="value">35.9%</div>
+      <div class="formula">25% Plays &divide; 3-Sec Plays</div>
+    </div>
+  </div>
+
+  <!-- RAW DATA -->
+  <div class="raw-section">
+    <h2>Raw Data</h2>
+    <div class="raw-grid">
+      <div class="raw-card">
+        <div class="label">Sessions</div>
+        <div class="value">278</div>
+        <span class="source-tag source-ga4">GA4</span>
+      </div>
+      <div class="raw-card">
+        <div class="label">Add to Carts</div>
+        <div class="value">8</div>
+        <span class="source-tag source-ga4">GA4</span>
+      </div>
+      <div class="raw-card">
+        <div class="label">Orders</div>
+        <div class="value">2</div>
+        <span class="source-tag source-shopify">Shopify</span>
+      </div>
+      <div class="raw-card">
+        <div class="label">Revenue</div>
+        <div class="value">$72.96</div>
+        <span class="source-tag source-shopify">Shopify</span>
+      </div>
+      <div class="raw-card">
+        <div class="label">Spend</div>
+        <div class="value">$148.12</div>
+        <span class="source-tag source-meta">Meta</span>
+      </div>
+      <div class="raw-card">
+        <div class="label">Purchases</div>
+        <div class="value">2</div>
+        <span class="source-tag source-meta">Meta</span>
+      </div>
+      <div class="raw-card">
+        <div class="label">Impressions</div>
+        <div class="value">3,293</div>
+        <span class="source-tag source-meta">Meta</span>
+      </div>
+      <div class="raw-card">
+        <div class="label">Reach</div>
+        <div class="value">2,879</div>
+        <span class="source-tag source-meta">Meta</span>
+      </div>
+      <div class="raw-card">
+        <div class="label">Link Clicks</div>
+        <div class="value">109</div>
+        <span class="source-tag source-meta">Meta</span>
+      </div>
+      <div class="raw-card">
+        <div class="label">3-Sec Plays</div>
+        <div class="value">117</div>
+        <span class="source-tag source-meta">Meta</span>
+      </div>
+      <div class="raw-card">
+        <div class="label">25% Plays</div>
+        <div class="value">42</div>
+        <span class="source-tag source-meta">Meta</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center;">
+    <a class="nav-link" href="index.html">&larr; Back to Daily Dashboard</a>
+  </div>
+
+  <footer>
+    Powered by GitHub Actions &middot; Data from GA4, Shopify, Meta
+  </footer>
+
+</body>
+</html>
