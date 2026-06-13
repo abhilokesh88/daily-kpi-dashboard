@@ -1,0 +1,7 @@
+google-analytics-data==0.18.14
+shopifyapi==12.6.0
+facebook-business==20.0.3
+requests==2.32.3
+jinja2==3.1.4
+matplotlib==3.9.2
+pandas==2.2.3

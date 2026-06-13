@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily KPI Dashboard</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card: #1a1d27;
+      --border: #2a2d3a;
+      --text: #e4e4e7;
+      --muted: #8b8d98;
+      --ga4: #4285F4;
+      --shopify: #96BF48;
+      --meta: #1877F2;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    header h1 { font-size: 1.8rem; font-weight: 700; }
+    header p { color: var(--muted); margin-top: 0.25rem; font-size: 0.9rem; }
+    .date-badge {
+      display: inline-block;
+      background: #2563eb;
+      color: white;
+      padding: 0.3rem 1rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* KPI Cards */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 1.5rem 0 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .section-title .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .kpi-card .label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .kpi-card .value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-top: 0.25rem;
+    }
+
+    /* Trend charts */
+    .trends {
+      margin-top: 2.5rem;
+    }
+    .trends h2 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+    .chart-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .chart-card img {
+      width: 100%;
+      display: block;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span class="date-badge">{{ report_date }}</span>
+    <h1>Daily KPI Dashboard</h1>
+    <p>Auto-updated daily &middot; Last generated {{ generated_at }}</p>
+  </header>
+
+  <!-- GA4 -->
+  <div class="section-title">
+    <span class="dot" style="background: var(--ga4)"></span>
+    Google Analytics
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="label">Sessions</div>
+      <div class="value">{{ "{:,}".format(ga4.sessions | default(0) | int) }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Conversion Rate</div>
+      <div class="value">{{ "%.2f" | format(ga4.conversion_rate | default(0) | float) }}%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Revenue</div>
+      <div class="value">${{ "{:,.2f}".format(ga4.revenue | default(0) | float) }}</div>
+    </div>
+  </div>
+
+  <!-- Shopify -->
+  <div class="section-title">
+    <span class="dot" style="background: var(--shopify)"></span>
+    Shopify
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="label">Orders</div>
+      <div class="value">{{ "{:,}".format(shopify.orders | default(0) | int) }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Revenue</div>
+      <div class="value">${{ "{:,.2f}".format(shopify.revenue | default(0) | float) }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">AOV</div>
+      <div class="value">${{ "{:,.2f}".format(shopify.aov | default(0) | float) }}</div>
+    </div>
+  </div>
+
+  <!-- Meta -->
+  <div class="section-title">
+    <span class="dot" style="background: var(--meta)"></span>
+    Meta Ads
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="label">Ad Spend</div>
+      <div class="value">${{ "{:,.2f}".format(meta.spend | default(0) | float) }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">ROAS</div>
+      <div class="value">{{ "%.2f" | format(meta.roas | default(0) | float) }}x</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">CPA</div>
+      <div class="value">${{ "{:,.2f}".format(meta.cpa | default(0) | float) }}</div>
+    </div>
+  </div>
+
+  <!-- Trend Charts -->
+  <div class="trends">
+    <h2>Trends</h2>
+    {% if has_trends %}
+    <div class="chart-grid">
+      <div class="chart-card"><img src="assets/ga4_sessions.png" alt="GA4 Sessions"></div>
+      <div class="chart-card"><img src="assets/ga4_conversion_rate.png" alt="GA4 Conversion Rate"></div>
+      <div class="chart-card"><img src="assets/ga4_revenue.png" alt="GA4 Revenue"></div>
+      <div class="chart-card"><img src="assets/shopify_orders.png" alt="Shopify Orders"></div>
+      <div class="chart-card"><img src="assets/shopify_revenue.png" alt="Shopify Revenue"></div>
+      <div class="chart-card"><img src="assets/shopify_aov.png" alt="Shopify AOV"></div>
+      <div class="chart-card"><img src="assets/meta_spend.png" alt="Meta Spend"></div>
+      <div class="chart-card"><img src="assets/meta_roas.png" alt="Meta ROAS"></div>
+      <div class="chart-card"><img src="assets/meta_cpa.png" alt="Meta CPA"></div>
+    </div>
+    {% else %}
+    <div class="empty-state">
+      Trend charts will appear here after 2+ days of data.
+    </div>
+    {% endif %}
+  </div>
+
+  <footer>
+    Powered by GitHub Actions &middot; Data from GA4, Shopify &amp; Meta
+  </footer>
+
+</body>
+</html>
