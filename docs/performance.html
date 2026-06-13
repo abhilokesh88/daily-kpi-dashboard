@@ -122,6 +122,63 @@
     .source-shopify { background: rgba(150,191,72,0.2); color: #96BF48; }
     .source-meta { background: rgba(24,119,242,0.2); color: #1877F2; }
 
+    /* History table */
+    .history-section { margin-top: 2.5rem; }
+    .history-section h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+    thead {
+      position: sticky;
+      top: 0;
+    }
+    thead tr:first-child th {
+      background: #1e2130;
+      padding: 0.5rem 0.6rem;
+      font-weight: 700;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid var(--border);
+    }
+    thead tr:nth-child(2) th {
+      background: var(--card);
+      padding: 0.4rem 0.6rem;
+      font-weight: 600;
+      font-size: 0.68rem;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .col-shopify { color: #96BF48; }
+    .col-meta { color: #1877F2; }
+    .col-ga4 { color: #4285F4; }
+    .col-econ { color: var(--green); }
+    .col-funnel { color: var(--yellow); }
+    .col-creative { color: var(--purple); }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: rgba(255,255,255,0.03); }
+    td {
+      padding: 0.45rem 0.6rem;
+      text-align: right;
+      background: var(--card);
+    }
+    td:first-child {
+      text-align: left;
+      font-weight: 600;
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background: var(--card);
+    }
+
     .nav-link {
       display: inline-block;
       margin-top: 2rem;
@@ -144,7 +201,7 @@
   <header>
     <span class="date-badge">2026-06-12</span>
     <h1>Daily Performance Log</h1>
-    <p>Calculated KPIs &middot; Generated 2026-06-13 13:45 UTC</p>
+    <p>Calculated KPIs &middot; Generated 2026-06-13 13:50 UTC</p>
   </header>
 
   <!-- ECONOMICS -->
@@ -262,7 +319,7 @@
       </div>
       <div class="raw-card">
         <div class="label">Reach</div>
-        <div class="value">2,879</div>
+        <div class="value">2,881</div>
         <span class="source-tag source-meta">Meta</span>
       </div>
       <div class="raw-card">
@@ -282,6 +339,62 @@
       </div>
     </div>
   </div>
+
+  <!-- HISTORY TABLE -->
+  
+  <div class="history-section">
+    <h2>Performance Log</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th rowspan="2">Date</th>
+            <th colspan="4" class="col-shopify">Shopify</th>
+            <th colspan="7" class="col-meta">Meta Ads</th>
+            <th colspan="5" class="col-econ">Economics</th>
+            <th colspan="3" class="col-funnel">Funnel</th>
+            <th colspan="2" class="col-creative">Creative</th>
+          </tr>
+          <tr>
+            <th>Revenue</th><th>Orders</th><th>Sessions</th><th>ATC</th>
+            <th>Spend</th><th>Purchases</th><th>Impr.</th><th>Reach</th><th>Link Clicks</th><th>3s Plays</th><th>25% Plays</th>
+            <th>MER</th><th>CPP</th><th>CTR</th><th>CVR</th><th>ATC Rate</th>
+            <th>Freq.</th><th>CPM</th><th>CPC</th>
+            <th>Hook</th><th>Hold</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td>2026-06-12</td>
+            <td>$73</td>
+            <td>2</td>
+            <td>278</td>
+            <td>8</td>
+            <td>$148</td>
+            <td>2</td>
+            <td>3,293</td>
+            <td>2,881</td>
+            <td>109</td>
+            <td>117</td>
+            <td>42</td>
+            <td>0.49x</td>
+            <td>$74.06</td>
+            <td>3.31%</td>
+            <td>0.72%</td>
+            <td>2.88%</td>
+            <td>1.1x</td>
+            <td>$44.98</td>
+            <td>$1.36</td>
+            <td>3.6%</td>
+            <td>35.9%</td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
 
   <div style="text-align: center;">
     <a class="nav-link" href="index.html">&larr; Back to Daily Dashboard</a>
