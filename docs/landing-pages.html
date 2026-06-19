@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Landing Page Performance</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card: #1a1d27;
+      --border: #2a2d3a;
+      --text: #e4e4e7;
+      --muted: #8b8d98;
+      --ga4: #4285F4;
+      --green: #2CA01C;
+      --red: #D94B38;
+      --blue: #2563eb;
+      --yellow: #F7B928;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    header { text-align: center; margin-bottom: 1.5rem; }
+    header h1 { font-size: 1.8rem; font-weight: 700; }
+    header p { color: var(--muted); margin-top: 0.25rem; font-size: 0.9rem; }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .controls label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 600;
+    }
+    .preset-btn {
+      padding: 0.4rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .preset-btn:hover { border-color: var(--ga4); color: var(--ga4); }
+    .preset-btn.active {
+      background: var(--ga4);
+      color: white;
+      border-color: var(--ga4);
+    }
+    .date-input {
+      padding: 0.4rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.8rem;
+      font-family: inherit;
+    }
+    .date-input::-webkit-calendar-picker-indicator { filter: invert(0.8); }
+    .controls .sep {
+      width: 1px;
+      height: 28px;
+      background: var(--border);
+      margin: 0 0.25rem;
+    }
+    .range-label {
+      font-size: 0.82rem;
+      color: var(--ga4);
+      font-weight: 600;
+      margin-left: auto;
+    }
+
+    /* Summary cards */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .summary-card .label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .summary-card .value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-top: 0.15rem;
+    }
+
+    /* Table */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+    thead th {
+      background: #1e2130;
+      padding: 0.6rem 0.75rem;
+      font-weight: 600;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 2px solid var(--border);
+      text-align: right;
+      cursor: pointer;
+      user-select: none;
+    }
+    thead th:first-child { text-align: left; }
+    thead th:hover { color: var(--ga4); }
+    thead th .sort-arrow { font-size: 0.65rem; margin-left: 3px; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: rgba(255,255,255,0.03); }
+    td {
+      padding: 0.5rem 0.75rem;
+      text-align: right;
+      background: var(--card);
+    }
+    td:first-child {
+      text-align: left;
+      font-weight: 500;
+      max-width: 350px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    tr.total-row td {
+      font-weight: 700;
+      border-top: 2px solid var(--border);
+      background: #1e2130;
+    }
+    .cvr-high { color: var(--green); font-weight: 700; }
+    .highlight-row td { border-left: 3px solid var(--ga4); }
+
+    /* Daily trend */
+    .trend-section { margin-top: 2rem; }
+    .trend-section h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+
+    .nav-links {
+      text-align: center;
+      margin-top: 2rem;
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+    }
+    .nav-link {
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .nav-link:hover { text-decoration: underline; }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Landing Page Performance</h1>
+    <p>Conversion by landing page &middot; Key event: purchase &middot; Generated 2026-06-19 19:52 UTC</p>
+  </header>
+
+  <!-- Controls -->
+  <div class="controls">
+    <label>Range:</label>
+    <button class="preset-btn" onclick="setPreset('yesterday')">Yesterday</button>
+    <button class="preset-btn" onclick="setPreset('7d')">Last 7 Days</button>
+    <button class="preset-btn" onclick="setPreset('30d')">Last 30 Days</button>
+    <button class="preset-btn" onclick="setPreset('mtd')">Month to Date</button>
+    <button class="preset-btn" onclick="setPreset('all')">All Time</button>
+    <div class="sep"></div>
+    <label>Custom:</label>
+    <input type="date" class="date-input" id="startDate" onchange="applyCustomRange()">
+    <span style="color:var(--muted)">to</span>
+    <input type="date" class="date-input" id="endDate" onchange="applyCustomRange()">
+    <span class="range-label" id="rangeLabel"></span>
+  </div>
+
+  <!-- Summary cards -->
+  <div class="summary-grid" id="summaryCards"></div>
+
+  <!-- Landing page table -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th onclick="sortTable('page')">Landing Page <span class="sort-arrow" id="sort-page"></span></th>
+          <th onclick="sortTable('sessions')">Sessions <span class="sort-arrow" id="sort-sessions"></span></th>
+          <th onclick="sortTable('active_users')">Active Users <span class="sort-arrow" id="sort-active_users"></span></th>
+          <th onclick="sortTable('new_users')">New Users <span class="sort-arrow" id="sort-new_users"></span></th>
+          <th onclick="sortTable('avg_duration')">Avg Duration <span class="sort-arrow" id="sort-avg_duration"></span></th>
+          <th onclick="sortTable('purchases')">Purchases <span class="sort-arrow" id="sort-purchases"></span></th>
+          <th onclick="sortTable('revenue')">Revenue <span class="sort-arrow" id="sort-revenue"></span></th>
+          <th onclick="sortTable('cvr')">CVR (%) <span class="sort-arrow" id="sort-cvr"></span></th>
+        </tr>
+      </thead>
+      <tbody id="lpTableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Daily trend for top pages -->
+  <div class="trend-section">
+    <h2>Daily Trend — Top Landing Pages</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left">Date</th>
+            <th style="text-align:left">Page</th>
+            <th>Sessions</th>
+            <th>Users</th>
+            <th>Purchases</th>
+            <th>Revenue</th>
+            <th>CVR</th>
+          </tr>
+        </thead>
+        <tbody id="trendTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">&larr; Daily Dashboard</a>
+    <a class="nav-link" href="analytics.html">GA4 Analytics</a>
+    <a class="nav-link" href="performance.html">Performance Log &rarr;</a>
+  </div>
+
+  <footer>
+    Powered by GitHub Actions &middot; Data from Google Analytics 4
+  </footer>
+
+<script>
+const ALL_DATA = [{"date": "2026-06-18", "page": "/wildbatch-starter-kit-landing-page", "sessions": 90, "active_users": 84, "new_users": 77, "avg_duration": 86.7, "purchases": 3, "revenue": 119.97, "cvr": 3.33}, {"date": "2026-06-18", "page": "/", "sessions": 24, "active_users": 23, "new_users": 19, "avg_duration": 151.1, "purchases": 0, "revenue": 0.0, "cvr": 0.0}, {"date": "2026-06-18", "page": "", "sessions": 10, "active_users": 6, "new_users": 0, "avg_duration": 20.4, "purchases": 1, "revenue": 39.99, "cvr": 10.0}, {"date": "2026-06-18", "page": "/products/wildbatch-starter-subscription", "sessions": 10, "active_users": 5, "new_users": 5, "avg_duration": 211.0, "purchases": 0, "revenue": 0.0, "cvr": 0.0}, {"date": "2026-06-18", "page": "/products/wildbatch-single-capsule-body-face-hair", "sessions": 6, "active_users": 5, "new_users": 4, "avg_duration": 85.6, "purchases": 0, "revenue": 0.0, "cvr": 0.0}, {"date": "2026-06-18", "page": "/checkouts/cn/hWNDVGqfZUY3dcwjhY5AKYGw/en-us/thank-you", "sessions": 1, "active_users": 1, "new_users": 0, "avg_duration": 198.0, "purchases": 0, "revenue": 0.0, "cvr": 0.0}, {"date": "2026-06-18", "page": "/checkouts/cn/hWNDVJDU6jfWPVAwR40BZWYj/en", "sessions": 1, "active_users": 1, "new_users": 1, "avg_duration": 0.0, "purchases": 0, "revenue": 0.0, "cvr": 0.0}, {"date": "2026-06-18", "page": "/checkouts/cn/hWNDVObFDCDi3kMmeCh5eSSQ/en", "sessions": 1, "active_users": 1, "new_users": 0, "avg_duration": 44.6, "purchases": 0, "revenue": 0.0, "cvr": 0.0}, {"date": "2026-06-18", "page": "/orders", "sessions": 1, "active_users": 1, "new_users": 0, "avg_duration": 896.7, "purchases": 0, "revenue": 0.0, "cvr": 0.0}, {"date": "2026-06-18", "page": "/products/wildbatch-3-oz-refill-pouch", "sessions": 1, "active_users": 1, "new_users": 0, "avg_duration": 279.0, "purchases": 0, "revenue": 0.0, "cvr": 0.0}, {"date": "2026-06-18", "page": "/products/wildbatch-4-pack", "sessions": 1, "active_users": 1, "new_users": 1, "avg_duration": 103.3, "purchases": 1, "revenue": 39.99, "cvr": 100.0}];
+
+let currentSort = { key: 'sessions', desc: true };
+let filteredData = [];
+
+function getDates() {
+  return [...new Set(ALL_DATA.map(r => r.date))].sort();
+}
+
+function setPreset(preset) {
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  const dates = getDates();
+  if (!dates.length) return;
+
+  const latest = dates[dates.length - 1];
+  const d = new Date(latest + 'T12:00:00');
+  let start;
+
+  switch(preset) {
+    case 'yesterday':
+      start = latest;
+      break;
+    case '7d':
+      const d7 = new Date(d);
+      d7.setDate(d7.getDate() - 6);
+      start = fmt(d7);
+      break;
+    case '30d':
+      const d30 = new Date(d);
+      d30.setDate(d30.getDate() - 29);
+      start = fmt(d30);
+      break;
+    case 'mtd':
+      start = latest.substring(0, 7) + '-01';
+      break;
+    case 'all':
+      start = dates[0];
+      break;
+  }
+
+  document.getElementById('startDate').value = start;
+  document.getElementById('endDate').value = latest;
+  applyFilter(start, latest);
+}
+
+function applyCustomRange() {
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  const s = document.getElementById('startDate').value;
+  const e = document.getElementById('endDate').value;
+  if (s && e) applyFilter(s, e);
+}
+
+function fmt(d) {
+  return d.toISOString().split('T')[0];
+}
+
+function applyFilter(start, end) {
+  filteredData = ALL_DATA.filter(r => r.date >= start && r.date <= end);
+
+  const dayCount = new Set(filteredData.map(r => r.date)).size;
+  document.getElementById('rangeLabel').textContent =
+    start === end ? start : `${start} → ${end} (${dayCount} day${dayCount !== 1 ? 's' : ''})`;
+
+  renderSummary();
+  renderTable();
+  renderTrend();
+}
+
+function renderSummary() {
+  const totals = { sessions: 0, active_users: 0, new_users: 0, purchases: 0, revenue: 0, duration_sum: 0 };
+
+  filteredData.forEach(r => {
+    totals.sessions += r.sessions;
+    totals.active_users += r.active_users;
+    totals.new_users += r.new_users;
+    totals.purchases += r.purchases;
+    totals.revenue += r.revenue;
+    totals.duration_sum += r.avg_duration * r.sessions;
+  });
+
+  const cvr = totals.sessions ? (totals.purchases / totals.sessions * 100).toFixed(2) : '0.00';
+  const avgDur = totals.sessions ? Math.round(totals.duration_sum / totals.sessions) : 0;
+
+  document.getElementById('summaryCards').innerHTML = `
+    <div class="summary-card"><div class="label">Sessions</div><div class="value">${totals.sessions.toLocaleString()}</div></div>
+    <div class="summary-card"><div class="label">Active Users</div><div class="value">${totals.active_users.toLocaleString()}</div></div>
+    <div class="summary-card"><div class="label">New Users</div><div class="value">${totals.new_users.toLocaleString()}</div></div>
+    <div class="summary-card"><div class="label">Avg Duration</div><div class="value">${avgDur}s</div></div>
+    <div class="summary-card"><div class="label">Purchases</div><div class="value">${totals.purchases.toLocaleString()}</div></div>
+    <div class="summary-card"><div class="label">Revenue</div><div class="value">$${totals.revenue.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</div></div>
+    <div class="summary-card"><div class="label">CVR</div><div class="value">${cvr}%</div></div>
+  `;
+}
+
+function renderTable() {
+  const grouped = {};
+  filteredData.forEach(r => {
+    if (!grouped[r.page]) {
+      grouped[r.page] = { page: r.page, sessions: 0, active_users: 0, new_users: 0, purchases: 0, revenue: 0, dur_sum: 0 };
+    }
+    const g = grouped[r.page];
+    g.sessions += r.sessions;
+    g.active_users += r.active_users;
+    g.new_users += r.new_users;
+    g.purchases += r.purchases;
+    g.revenue += r.revenue;
+    g.dur_sum += r.avg_duration * r.sessions;
+  });
+
+  let rows = Object.values(grouped).map(g => ({
+    ...g,
+    avg_duration: g.sessions ? Math.round(g.dur_sum / g.sessions) : 0,
+    cvr: g.sessions ? +(g.purchases / g.sessions * 100).toFixed(2) : 0,
+  }));
+
+  const k = currentSort.key;
+  rows.sort((a, b) => {
+    const av = k === 'page' ? a[k] : a[k];
+    const bv = k === 'page' ? b[k] : b[k];
+    if (k === 'page') return currentSort.desc ? bv.localeCompare(av) : av.localeCompare(bv);
+    return currentSort.desc ? bv - av : av - bv;
+  });
+
+  document.querySelectorAll('.sort-arrow').forEach(el => el.textContent = '');
+  const arrow = document.getElementById('sort-' + k);
+  if (arrow) arrow.textContent = currentSort.desc ? '▼' : '▲';
+
+  const totals = rows.reduce((t, r) => {
+    t.sessions += r.sessions; t.active_users += r.active_users; t.new_users += r.new_users;
+    t.purchases += r.purchases; t.revenue += r.revenue; t.dur_sum += r.avg_duration * r.sessions;
+    return t;
+  }, { sessions: 0, active_users: 0, new_users: 0, purchases: 0, revenue: 0, dur_sum: 0 });
+
+  const isReplo = (p) => p.includes('landing-page') || p.includes('starter-kit');
+
+  let html = rows.map(r => {
+    const highlight = isReplo(r.page) ? ' class="highlight-row"' : '';
+    const cvrClass = r.cvr >= 3 ? ' class="cvr-high"' : '';
+    return `<tr${highlight}>
+      <td>${r.page}</td>
+      <td>${r.sessions.toLocaleString()}</td>
+      <td>${r.active_users.toLocaleString()}</td>
+      <td>${r.new_users.toLocaleString()}</td>
+      <td>${r.avg_duration}s</td>
+      <td>${r.purchases.toLocaleString()}</td>
+      <td>$${r.revenue.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+      <td${cvrClass}>${r.cvr.toFixed(2)}%</td>
+    </tr>`;
+  }).join('');
+
+  const tCvr = totals.sessions ? (totals.purchases / totals.sessions * 100).toFixed(2) : '0.00';
+  const tDur = totals.sessions ? Math.round(totals.dur_sum / totals.sessions) : 0;
+  html += `<tr class="total-row">
+    <td>Total</td>
+    <td>${totals.sessions.toLocaleString()}</td>
+    <td>${totals.active_users.toLocaleString()}</td>
+    <td>${totals.new_users.toLocaleString()}</td>
+    <td>${tDur}s</td>
+    <td>${totals.purchases.toLocaleString()}</td>
+    <td>$${totals.revenue.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+    <td>${tCvr}%</td>
+  </tr>`;
+
+  document.getElementById('lpTableBody').innerHTML = html;
+}
+
+function renderTrend() {
+  const topPages = {};
+  filteredData.forEach(r => {
+    topPages[r.page] = (topPages[r.page] || 0) + r.sessions;
+  });
+  const top5 = Object.entries(topPages)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(e => e[0]);
+
+  const trendRows = filteredData
+    .filter(r => top5.includes(r.page))
+    .sort((a, b) => b.date.localeCompare(a.date) || b.sessions - a.sessions);
+
+  const isReplo = (p) => p.includes('landing-page') || p.includes('starter-kit');
+
+  const html = trendRows.map(r => {
+    const highlight = isReplo(r.page) ? ' class="highlight-row"' : '';
+    const cvrClass = r.cvr >= 3 ? ' class="cvr-high"' : '';
+    return `<tr${highlight}>
+      <td>${r.date}</td>
+      <td>${r.page}</td>
+      <td>${r.sessions.toLocaleString()}</td>
+      <td>${r.active_users.toLocaleString()}</td>
+      <td>${r.purchases.toLocaleString()}</td>
+      <td>$${r.revenue.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+      <td${cvrClass}>${r.cvr.toFixed(2)}%</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('trendTableBody').innerHTML = html;
+}
+
+function sortTable(key) {
+  if (currentSort.key === key) {
+    currentSort.desc = !currentSort.desc;
+  } else {
+    currentSort = { key, desc: key !== 'page' };
+  }
+  renderTable();
+}
+
+// Initialize
+const dates = getDates();
+if (dates.length > 0) {
+  const latest = dates[dates.length - 1];
+  document.getElementById('startDate').value = latest;
+  document.getElementById('endDate').value = latest;
+
+  if (dates.length === 1) {
+    document.querySelector('.preset-btn').classList.add('active');
+    applyFilter(latest, latest);
+  } else {
+    document.querySelectorAll('.preset-btn')[1].classList.add('active');
+    const d = new Date(latest + 'T12:00:00');
+    d.setDate(d.getDate() - 6);
+    const start7 = fmt(d) < dates[0] ? dates[0] : fmt(d);
+    applyFilter(start7, latest);
+  }
+}
+</script>
+
+</body>
+</html>
