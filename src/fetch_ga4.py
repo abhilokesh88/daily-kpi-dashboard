@@ -224,6 +224,61 @@ def fetch_summary(target_date: date | None = None) -> dict:
 
 # --- helpers ---------------------------------------------------------------
 
+def fetch_landing_pages(target_date: date | None = None) -> list[dict]:
+    """Landing page performance: sessions, users, purchases, revenue, CVR."""
+
+    client = _get_client()
+    if not client:
+        return []
+
+    target = target_date or date.today() - timedelta(days=1)
+    date_str = target.strftime("%Y-%m-%d")
+
+    request = RunReportRequest(
+        property=f"properties/{GA4_PROPERTY_ID}",
+        date_ranges=[DateRange(start_date=date_str, end_date=date_str)],
+        dimensions=[Dimension(name="landingPage")],
+        metrics=[
+            Metric(name="sessions"),
+            Metric(name="activeUsers"),
+            Metric(name="newUsers"),
+            Metric(name="averageSessionDuration"),
+            Metric(name="ecommercePurchases"),
+            Metric(name="purchaseRevenue"),
+        ],
+        order_bys=[
+            OrderBy(metric=OrderBy.MetricOrderBy(metric_name="sessions"), desc=True),
+        ],
+        limit=50,
+    )
+
+    response = client.run_report(request)
+    rows = []
+    for row in response.rows:
+        sessions = int(row.metric_values[0].value)
+        active_users = int(row.metric_values[1].value)
+        new_users = int(row.metric_values[2].value)
+        avg_duration = float(row.metric_values[3].value)
+        purchases = int(row.metric_values[4].value)
+        revenue = float(row.metric_values[5].value)
+        cvr = round(purchases / sessions * 100, 2) if sessions > 0 else 0.0
+
+        rows.append({
+            "date": date_str,
+            "page": row.dimension_values[0].value,
+            "sessions": sessions,
+            "active_users": active_users,
+            "new_users": new_users,
+            "avg_duration": round(avg_duration, 1),
+            "purchases": purchases,
+            "revenue": round(revenue, 2),
+            "cvr": cvr,
+        })
+
+    print(f"  [GA4] Landing pages: {len(rows)} rows for {date_str}.")
+    return rows
+
+
 def _write_temp_credentials() -> str:
     tmp = tempfile.NamedTemporaryFile(
         mode="w", suffix=".json", delete=False, prefix="ga4_creds_"
