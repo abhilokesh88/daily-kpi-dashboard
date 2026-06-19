@@ -10,7 +10,7 @@ Main entry point — run this daily (locally or via GitHub Actions).
 """
 
 from src import fetch_ga4, fetch_shopify, fetch_meta
-from src import storage, charts, slack_notify, build_dashboard, build_performance
+from src import storage, charts, slack_notify, build_dashboard, build_performance, build_analytics
 
 
 def main():
@@ -19,6 +19,8 @@ def main():
     # 1. Fetch data
     print("[1/5] Fetching data...")
     ga4_data = fetch_ga4.fetch()
+    ga4_summary = fetch_ga4.fetch_summary()
+    ad_performance = fetch_ga4.fetch_ad_performance()
     shopify_data = fetch_shopify.fetch()
     meta_data = fetch_meta.fetch()
 
@@ -35,6 +37,7 @@ def main():
     print("\n[4/5] Building dashboards...")
     build_dashboard.build(ga4_data, shopify_data, meta_data, history)
     build_performance.build_performance(ga4_data, shopify_data, meta_data)
+    build_analytics.build_analytics(ga4_summary, ad_performance)
 
     # 5. Post to Slack
     print("\n[5/5] Sending Slack notification...")
