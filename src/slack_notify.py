@@ -31,8 +31,7 @@ def send(ga4: dict, shopify: dict, meta: dict) -> None:
                 "text": (
                     "*:bar_chart: Google Analytics*\n"
                     f">  Sessions: *{ga4.get('sessions', 0):,}*\n"
-                    f">  Conversion Rate: *{ga4.get('conversion_rate', 0):.2f}%*\n"
-                    f">  Revenue: *${ga4.get('revenue', 0):,.2f}*"
+                    f">  Conversion Rate: *{ga4.get('conversion_rate', 0):.2f}%*"
                 ),
             },
         },

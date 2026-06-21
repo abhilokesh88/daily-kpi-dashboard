@@ -141,10 +141,6 @@
       <div class="label">Conversion Rate</div>
       <div class="value">{{ "%.2f" | format(ga4.conversion_rate | default(0) | float) }}%</div>
     </div>
-    <div class="kpi-card">
-      <div class="label">Revenue</div>
-      <div class="value">${{ "{:,.2f}".format(ga4.revenue | default(0) | float) }}</div>
-    </div>
   </div>
 
   <!-- Shopify -->
