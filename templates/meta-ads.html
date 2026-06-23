@@ -198,6 +198,11 @@
       <div class="formula">Meta-reported purchases</div>
     </div>
     <div class="metric-card">
+      <div class="label">Purchase Value</div>
+      <div class="value">${{ "{:,.2f}".format(raw.meta_revenue | float) }}</div>
+      <div class="formula">Meta-attributed total purchase value</div>
+    </div>
+    <div class="metric-card">
       <div class="label">Impressions</div>
       <div class="value">{{ "{:,}".format(raw.impressions | int) }}</div>
     </div>
@@ -260,7 +265,7 @@
     <div class="metric-card">
       <div class="label">Hook Rate</div>
       <div class="value">{{ "%.1f" | format(kpis.hook_rate) }}%</div>
-      <div class="formula">3s Plays / Impressions</div>
+      <div class="formula">3s Plays / Impressions (video ads only)</div>
     </div>
     <div class="metric-card">
       <div class="label">Hold Rate</div>
@@ -283,12 +288,13 @@
       <thead>
         <tr>
           <th rowspan="2" class="col-group-header">Date</th>
-          <th colspan="7" class="col-group-header col-raw">Raw Metrics</th>
+          <th colspan="8" class="col-group-header col-raw">Raw Metrics</th>
           <th colspan="8" class="col-group-header col-calc">Calculated KPIs</th>
         </tr>
         <tr>
           <th>Spend</th>
           <th>Purch.</th>
+          <th>Purch. Val</th>
           <th>Impr.</th>
           <th>Reach</th>
           <th>Clicks</th>
@@ -310,6 +316,7 @@
           <td>{{ row.date }}</td>
           <td>${{ "{:,.2f}".format(row.spend) }}</td>
           <td>{{ "{:,.0f}".format(row.purchases) }}</td>
+          <td>${{ "{:,.2f}".format(row.meta_revenue) }}</td>
           <td>{{ "{:,.0f}".format(row.impressions) }}</td>
           <td>{{ "{:,.0f}".format(row.reach) }}</td>
           <td>{{ "{:,.0f}".format(row.link_clicks) }}</td>

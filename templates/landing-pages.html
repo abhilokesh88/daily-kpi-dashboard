@@ -226,6 +226,8 @@
           <th onclick="sortTable('active_users')">Active Users <span class="sort-arrow" id="sort-active_users"></span></th>
           <th onclick="sortTable('new_users')">New Users <span class="sort-arrow" id="sort-new_users"></span></th>
           <th onclick="sortTable('avg_duration')">Avg Duration <span class="sort-arrow" id="sort-avg_duration"></span></th>
+          <th onclick="sortTable('bounce_rate')">Bounce Rate <span class="sort-arrow" id="sort-bounce_rate"></span></th>
+          <th onclick="sortTable('add_to_carts')">ATCs <span class="sort-arrow" id="sort-add_to_carts"></span></th>
           <th onclick="sortTable('purchases')">Purchases <span class="sort-arrow" id="sort-purchases"></span></th>
           <th onclick="sortTable('revenue')">Revenue <span class="sort-arrow" id="sort-revenue"></span></th>
           <th onclick="sortTable('cvr')">CVR (%) <span class="sort-arrow" id="sort-cvr"></span></th>
@@ -246,6 +248,8 @@
             <th style="text-align:left">Page</th>
             <th>Sessions</th>
             <th>Users</th>
+            <th>Bounce</th>
+            <th>ATCs</th>
             <th>Purchases</th>
             <th>Revenue</th>
             <th>CVR</th>
@@ -338,7 +342,7 @@ function applyFilter(start, end) {
 }
 
 function renderSummary() {
-  const totals = { sessions: 0, active_users: 0, new_users: 0, purchases: 0, revenue: 0, duration_sum: 0 };
+  const totals = { sessions: 0, active_users: 0, new_users: 0, purchases: 0, revenue: 0, duration_sum: 0, bounce_sum: 0, add_to_carts: 0 };
 
   filteredData.forEach(r => {
     totals.sessions += r.sessions;
@@ -347,16 +351,21 @@ function renderSummary() {
     totals.purchases += r.purchases;
     totals.revenue += r.revenue;
     totals.duration_sum += r.avg_duration * r.sessions;
+    totals.bounce_sum += (r.bounce_rate || 0) * r.sessions;
+    totals.add_to_carts += (r.add_to_carts || 0);
   });
 
   const cvr = totals.sessions ? (totals.purchases / totals.sessions * 100).toFixed(2) : '0.00';
   const avgDur = totals.sessions ? Math.round(totals.duration_sum / totals.sessions) : 0;
+  const avgBounce = totals.sessions ? (totals.bounce_sum / totals.sessions).toFixed(1) : '0.0';
 
   document.getElementById('summaryCards').innerHTML = `
     <div class="summary-card"><div class="label">Sessions</div><div class="value">${totals.sessions.toLocaleString()}</div></div>
     <div class="summary-card"><div class="label">Active Users</div><div class="value">${totals.active_users.toLocaleString()}</div></div>
     <div class="summary-card"><div class="label">New Users</div><div class="value">${totals.new_users.toLocaleString()}</div></div>
     <div class="summary-card"><div class="label">Avg Duration</div><div class="value">${avgDur}s</div></div>
+    <div class="summary-card"><div class="label">Bounce Rate</div><div class="value">${avgBounce}%</div></div>
+    <div class="summary-card"><div class="label">ATCs</div><div class="value">${totals.add_to_carts.toLocaleString()}</div></div>
     <div class="summary-card"><div class="label">Purchases</div><div class="value">${totals.purchases.toLocaleString()}</div></div>
     <div class="summary-card"><div class="label">Revenue</div><div class="value">$${totals.revenue.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</div></div>
     <div class="summary-card"><div class="label">CVR</div><div class="value">${cvr}%</div></div>
@@ -367,7 +376,7 @@ function renderTable() {
   const grouped = {};
   filteredData.forEach(r => {
     if (!grouped[r.page]) {
-      grouped[r.page] = { page: r.page, sessions: 0, active_users: 0, new_users: 0, purchases: 0, revenue: 0, dur_sum: 0 };
+      grouped[r.page] = { page: r.page, sessions: 0, active_users: 0, new_users: 0, purchases: 0, revenue: 0, dur_sum: 0, bounce_sum: 0, add_to_carts: 0 };
     }
     const g = grouped[r.page];
     g.sessions += r.sessions;
@@ -376,11 +385,14 @@ function renderTable() {
     g.purchases += r.purchases;
     g.revenue += r.revenue;
     g.dur_sum += r.avg_duration * r.sessions;
+    g.bounce_sum += (r.bounce_rate || 0) * r.sessions;
+    g.add_to_carts += (r.add_to_carts || 0);
   });
 
   let rows = Object.values(grouped).map(g => ({
     ...g,
     avg_duration: g.sessions ? Math.round(g.dur_sum / g.sessions) : 0,
+    bounce_rate: g.sessions ? +(g.bounce_sum / g.sessions).toFixed(1) : 0,
     cvr: g.sessions ? +(g.purchases / g.sessions * 100).toFixed(2) : 0,
   }));
 
@@ -398,9 +410,10 @@ function renderTable() {
 
   const totals = rows.reduce((t, r) => {
     t.sessions += r.sessions; t.active_users += r.active_users; t.new_users += r.new_users;
-    t.purchases += r.purchases; t.revenue += r.revenue; t.dur_sum += r.avg_duration * r.sessions;
+    t.add_to_carts += r.add_to_carts; t.purchases += r.purchases; t.revenue += r.revenue;
+    t.dur_sum += r.avg_duration * r.sessions; t.bounce_sum += r.bounce_rate * r.sessions;
     return t;
-  }, { sessions: 0, active_users: 0, new_users: 0, purchases: 0, revenue: 0, dur_sum: 0 });
+  }, { sessions: 0, active_users: 0, new_users: 0, add_to_carts: 0, purchases: 0, revenue: 0, dur_sum: 0, bounce_sum: 0 });
 
   const isReplo = (p) => p.includes('landing-page') || p.includes('starter-kit');
 
@@ -413,6 +426,8 @@ function renderTable() {
       <td>${r.active_users.toLocaleString()}</td>
       <td>${r.new_users.toLocaleString()}</td>
       <td>${r.avg_duration}s</td>
+      <td>${r.bounce_rate.toFixed(1)}%</td>
+      <td>${r.add_to_carts.toLocaleString()}</td>
       <td>${r.purchases.toLocaleString()}</td>
       <td>$${r.revenue.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
       <td${cvrClass}>${r.cvr.toFixed(2)}%</td>
@@ -421,12 +436,15 @@ function renderTable() {
 
   const tCvr = totals.sessions ? (totals.purchases / totals.sessions * 100).toFixed(2) : '0.00';
   const tDur = totals.sessions ? Math.round(totals.dur_sum / totals.sessions) : 0;
+  const tBounce = totals.sessions ? (totals.bounce_sum / totals.sessions).toFixed(1) : '0.0';
   html += `<tr class="total-row">
     <td>Total</td>
     <td>${totals.sessions.toLocaleString()}</td>
     <td>${totals.active_users.toLocaleString()}</td>
     <td>${totals.new_users.toLocaleString()}</td>
     <td>${tDur}s</td>
+    <td>${tBounce}%</td>
+    <td>${totals.add_to_carts.toLocaleString()}</td>
     <td>${totals.purchases.toLocaleString()}</td>
     <td>$${totals.revenue.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
     <td>${tCvr}%</td>
@@ -456,6 +474,8 @@ function renderTrend() {
       <td>${r.page}</td>
       <td>${r.sessions.toLocaleString()}</td>
       <td>${r.active_users.toLocaleString()}</td>
+      <td>${(r.bounce_rate || 0).toFixed(1)}%</td>
+      <td>${(r.add_to_carts || 0).toLocaleString()}</td>
       <td>${r.purchases.toLocaleString()}</td>
       <td>$${r.revenue.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
       <td${cvrClass}>${r.cvr.toFixed(2)}%</td>

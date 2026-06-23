@@ -34,7 +34,7 @@ def fetch(target_date: date | None = None) -> dict:
     params = {
         "access_token": META_ACCESS_TOKEN,
         "time_range": f'{{"since":"{date_str}","until":"{date_str}"}}',
-        "fields": "spend,purchase_roas,actions,impressions,reach,inline_link_clicks,video_play_actions,video_p25_watched_actions",
+        "fields": "spend,purchase_roas,actions,action_values,impressions,reach,inline_link_clicks,video_play_actions,video_p25_watched_actions",
         "level": "account",
     }
 
@@ -61,7 +61,8 @@ def fetch(target_date: date | None = None) -> dict:
     video_plays_3s = _extract_action_value(row.get("video_play_actions", []), "video_view")
     video_plays_25 = _extract_action_value(row.get("video_p25_watched_actions", []), "video_view")
 
-    meta_revenue = round(spend * roas, 2)
+    purchase_value = _extract_action_float(row.get("action_values", []), "purchase")
+    meta_revenue = round(purchase_value, 2) if purchase_value else round(spend * roas, 2)
 
     return {
         "date": date_str,
@@ -81,11 +82,17 @@ def fetch(target_date: date | None = None) -> dict:
 # --- helpers ---------------------------------------------------------------
 
 def _extract_action_value(actions: list[dict], action_type: str) -> int:
-    """Pull the value for a specific action_type from Meta's actions list."""
     for action in actions:
         if action.get("action_type") == action_type:
             return int(action.get("value", 0))
     return 0
+
+
+def _extract_action_float(actions: list[dict], action_type: str) -> float:
+    for action in actions:
+        if action.get("action_type") == action_type:
+            return float(action.get("value", 0))
+    return 0.0
 
 
 def _empty(date_str: str = "") -> dict:

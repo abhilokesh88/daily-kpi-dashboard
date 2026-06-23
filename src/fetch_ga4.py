@@ -173,6 +173,7 @@ def fetch_summary(target_date: date | None = None) -> dict:
         metrics=[
             Metric(name="sessions"),
             Metric(name="totalUsers"),
+            Metric(name="addToCarts"),
             Metric(name="ecommercePurchases"),
             Metric(name="purchaseRevenue"),
             Metric(name="bounceRate"),
@@ -188,14 +189,18 @@ def fetch_summary(target_date: date | None = None) -> dict:
     for row in channel_resp.rows:
         ch_sessions = int(row.metric_values[0].value)
         ch_users = int(row.metric_values[1].value)
-        ch_purchases = int(row.metric_values[2].value)
-        ch_revenue = float(row.metric_values[3].value)
-        ch_bounce = float(row.metric_values[4].value)
+        ch_atc = int(row.metric_values[2].value)
+        ch_purchases = int(row.metric_values[3].value)
+        ch_revenue = float(row.metric_values[4].value)
+        ch_bounce = float(row.metric_values[5].value)
         ch_cvr = round(ch_purchases / ch_sessions * 100, 2) if ch_sessions > 0 else 0.0
+        ch_atc_rate = round(ch_atc / ch_sessions * 100, 2) if ch_sessions > 0 else 0.0
         channels.append({
             "channel": row.dimension_values[0].value,
             "sessions": ch_sessions,
             "users": ch_users,
+            "atc": ch_atc,
+            "atc_rate": ch_atc_rate,
             "purchases": ch_purchases,
             "revenue": round(ch_revenue, 2),
             "bounce_rate": round(ch_bounce * 100, 1),
@@ -243,6 +248,8 @@ def fetch_landing_pages(target_date: date | None = None) -> list[dict]:
             Metric(name="activeUsers"),
             Metric(name="newUsers"),
             Metric(name="averageSessionDuration"),
+            Metric(name="bounceRate"),
+            Metric(name="addToCarts"),
             Metric(name="ecommercePurchases"),
             Metric(name="purchaseRevenue"),
         ],
@@ -259,8 +266,10 @@ def fetch_landing_pages(target_date: date | None = None) -> list[dict]:
         active_users = int(row.metric_values[1].value)
         new_users = int(row.metric_values[2].value)
         avg_duration = float(row.metric_values[3].value)
-        purchases = int(row.metric_values[4].value)
-        revenue = float(row.metric_values[5].value)
+        bounce_rate = float(row.metric_values[4].value)
+        add_to_carts = int(row.metric_values[5].value)
+        purchases = int(row.metric_values[6].value)
+        revenue = float(row.metric_values[7].value)
         cvr = round(purchases / sessions * 100, 2) if sessions > 0 else 0.0
 
         rows.append({
@@ -270,6 +279,8 @@ def fetch_landing_pages(target_date: date | None = None) -> list[dict]:
             "active_users": active_users,
             "new_users": new_users,
             "avg_duration": round(avg_duration, 1),
+            "bounce_rate": round(bounce_rate * 100, 1),
+            "add_to_carts": add_to_carts,
             "purchases": purchases,
             "revenue": round(revenue, 2),
             "cvr": cvr,

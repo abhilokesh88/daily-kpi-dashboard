@@ -231,8 +231,9 @@
       <div class="value">{{ "%.1f" | format(summary.pages_per_session) }}</div>
     </div>
     <div class="summary-card">
-      <div class="label">Bounce Rate</div>
+      <div class="label">Bounce Rate <span style="color:var(--yellow); font-size:0.6rem;" title="GA4 bounce = not-engaged sessions (under 10s, no events). Not comparable to Universal Analytics bounce rate.">&#9888;</span></div>
       <div class="value">{{ "%.1f" | format(summary.bounce_rate) }}%</div>
+      <div style="font-size:0.6rem; color:var(--yellow); margin-top:0.2rem;">GA4 = not-engaged sessions</div>
     </div>
     <div class="summary-card">
       <div class="label">Avg Duration</div>
@@ -274,6 +275,8 @@
           <th style="text-align:left">Channel</th>
           <th>Sessions</th>
           <th>Users</th>
+          <th>ATCs</th>
+          <th>ATC Rate</th>
           <th>Purchases</th>
           <th>Revenue</th>
           <th>Bounce Rate</th>
@@ -286,6 +289,8 @@
           <td>{{ ch.channel }}</td>
           <td>{{ "{:,}".format(ch.sessions) }}</td>
           <td>{{ "{:,}".format(ch.users) }}</td>
+          <td>{{ "{:,}".format(ch.atc) }}</td>
+          <td>{{ "%.2f" | format(ch.atc_rate) }}%</td>
           <td>{{ "{:,}".format(ch.purchases) }}</td>
           <td>${{ "{:,.2f}".format(ch.revenue) }}</td>
           <td>{{ "%.1f" | format(ch.bounce_rate) }}%</td>
