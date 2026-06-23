@@ -1,8 +1,8 @@
 """
 Simple CSV-based storage for daily KPIs.
 
-Each day's data is appended to data/history.csv so we accumulate
-a trend over time. The dashboard reads this file to draw charts.
+Each day's data is written to data/history.csv with deduplication
+so we accumulate a trend over time. The dashboard reads this file to draw charts.
 """
 
 import csv
@@ -34,11 +34,10 @@ FIELDS = [
 
 
 def save(ga4: dict, shopify: dict, meta: dict) -> None:
-    """Append one row to the history CSV."""
-    file_exists = os.path.isfile(HISTORY_FILE)
+    date_str = ga4.get("date") or shopify.get("date") or meta.get("date") or str(date.today())
 
     row = {
-        "date": ga4.get("date") or shopify.get("date") or meta.get("date") or str(date.today()),
+        "date": date_str,
         "ga4_sessions": ga4.get("sessions", 0),
         "ga4_conversion_rate": ga4.get("conversion_rate", 0),
         "ga4_revenue": ga4.get("revenue", 0),
@@ -55,13 +54,16 @@ def save(ga4: dict, shopify: dict, meta: dict) -> None:
 
     os.makedirs(DATA_DIR, exist_ok=True)
 
-    with open(HISTORY_FILE, "a", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=FIELDS)
-        if not file_exists:
-            writer.writeheader()
-        writer.writerow(row)
+    existing = load_history()
+    existing = [r for r in existing if r.get("date") != date_str]
+    existing.append(row)
 
-    print(f"  [Storage] Saved row for {row['date']}.")
+    with open(HISTORY_FILE, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=FIELDS, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(existing)
+
+    print(f"  [Storage] Saved row for {date_str}.")
 
 
 def load_history() -> list[dict]:
