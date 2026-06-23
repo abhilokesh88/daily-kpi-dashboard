@@ -19,7 +19,7 @@ FIELDS = [
     # GA4
     "sessions", "atc",
     # Meta
-    "spend", "purchases", "impressions", "reach",
+    "spend", "purchases", "meta_revenue", "impressions", "reach",
     "link_clicks", "video_3s", "video_25",
     # Calculated — Economics
     "mer", "cpp", "ctr", "cvr", "atc_rate",

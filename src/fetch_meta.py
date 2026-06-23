@@ -61,12 +61,15 @@ def fetch(target_date: date | None = None) -> dict:
     video_plays_3s = _extract_action_value(row.get("video_play_actions", []), "video_view")
     video_plays_25 = _extract_action_value(row.get("video_p25_watched_actions", []), "video_view")
 
+    meta_revenue = round(spend * roas, 2)
+
     return {
         "date": date_str,
         "spend": round(spend, 2),
         "roas": round(roas, 2),
         "cpa": round(cpa, 2),
         "purchases": purchases,
+        "revenue": meta_revenue,
         "impressions": impressions,
         "reach": reach,
         "link_clicks": link_clicks,
@@ -92,6 +95,7 @@ def _empty(date_str: str = "") -> dict:
         "roas": 0.0,
         "cpa": 0.0,
         "purchases": 0,
+        "revenue": 0.0,
         "impressions": 0,
         "reach": 0,
         "link_clicks": 0,

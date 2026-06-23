@@ -189,6 +189,10 @@
 
   <div class="metric-grid">
     <div class="metric-card">
+      <div class="label">Spend</div>
+      <div class="value">${{ "{:,.2f}".format(raw.spend | float) }}</div>
+    </div>
+    <div class="metric-card">
       <div class="label">Purchases</div>
       <div class="value">{{ "{:,}".format(raw.purchases | int) }}</div>
       <div class="formula">Meta-reported purchases</div>
@@ -226,12 +230,12 @@
     <div class="metric-card">
       <div class="label">MER</div>
       <div class="value">{{ "%.2f" | format(kpis.mer) }}x</div>
-      <div class="formula">Shopify Revenue / Meta Spend</div>
+      <div class="formula">Meta Revenue / Meta Spend</div>
     </div>
     <div class="metric-card">
       <div class="label">CPP</div>
       <div class="value">${{ "{:,.2f}".format(kpis.cpp) }}</div>
-      <div class="formula">Meta Spend / Shopify Orders</div>
+      <div class="formula">Meta Spend / Meta Purchases</div>
     </div>
     <div class="metric-card">
       <div class="label">CTR</div>
@@ -279,10 +283,11 @@
       <thead>
         <tr>
           <th rowspan="2" class="col-group-header">Date</th>
-          <th colspan="6" class="col-group-header col-raw">Raw Metrics</th>
+          <th colspan="7" class="col-group-header col-raw">Raw Metrics</th>
           <th colspan="8" class="col-group-header col-calc">Calculated KPIs</th>
         </tr>
         <tr>
+          <th>Spend</th>
           <th>Purch.</th>
           <th>Impr.</th>
           <th>Reach</th>
@@ -303,6 +308,7 @@
         {% for row in history | reverse %}
         <tr>
           <td>{{ row.date }}</td>
+          <td>${{ "{:,.2f}".format(row.spend) }}</td>
           <td>{{ "{:,.0f}".format(row.purchases) }}</td>
           <td>{{ "{:,.0f}".format(row.impressions) }}</td>
           <td>{{ "{:,.0f}".format(row.reach) }}</td>
