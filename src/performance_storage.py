@@ -31,18 +31,20 @@ FIELDS = [
 
 
 def save(date_str: str, raw: dict, kpis: dict) -> None:
-    file_exists = os.path.isfile(PERF_FILE)
     os.makedirs(DATA_DIR, exist_ok=True)
 
-    row = {"date": date_str}
-    row.update(raw)
-    row.update(kpis)
+    existing = load_history()
+    existing = [r for r in existing if r.get("date") != date_str]
 
-    with open(PERF_FILE, "a", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=FIELDS)
-        if not file_exists:
-            writer.writeheader()
-        writer.writerow(row)
+    new_row = {"date": date_str}
+    new_row.update(raw)
+    new_row.update(kpis)
+    existing.append(new_row)
+
+    with open(PERF_FILE, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=FIELDS, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(existing)
 
     print(f"  [PerfLog] Saved row for {date_str}.")
 
