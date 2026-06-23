@@ -13,6 +13,7 @@
       --muted: #8b8d98;
       --blue: #2563eb;
       --green: #2CA01C;
+      --yellow: #F7B928;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -20,7 +21,7 @@
       background: var(--bg);
       color: var(--text);
       padding: 2rem;
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
     }
     header { text-align: center; margin-bottom: 2rem; }
@@ -37,41 +38,61 @@
       margin-bottom: 0.5rem;
     }
 
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 2rem 0 0.75rem;
+    }
+
     /* KPI Cards */
     .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 1rem;
-      margin-bottom: 2.5rem;
-    }
-    @media (max-width: 900px) {
-      .kpi-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+      grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 1rem;
     }
     .kpi-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 1.25rem;
+      padding: 1rem;
       text-align: center;
     }
     .kpi-card .label {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
     .kpi-card .source {
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       color: var(--muted);
       margin-top: 0.1rem;
     }
     .kpi-card .value {
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       font-weight: 700;
-      margin-top: 0.3rem;
+      margin-top: 0.25rem;
     }
 
+    /* Customer split */
+    .customer-split {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.4rem;
+      justify-content: center;
+    }
+    .customer-split .tag {
+      font-size: 0.65rem;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .tag-new { background: rgba(37,99,235,0.2); color: var(--blue); }
+    .tag-returning { background: rgba(44,160,28,0.2); color: var(--green); }
+
     /* Trend charts */
+    .trends { margin-top: 2rem; }
     .trends h2 { font-size: 1.3rem; margin-bottom: 1rem; }
     .chart-grid {
       display: grid;
@@ -103,14 +124,14 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       white-space: nowrap;
     }
     thead th {
       background: #1e2130;
-      padding: 0.6rem 0.8rem;
+      padding: 0.55rem 0.7rem;
       font-weight: 600;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       border-bottom: 2px solid var(--border);
@@ -120,7 +141,7 @@
     tbody tr { border-bottom: 1px solid var(--border); }
     tbody tr:hover { background: rgba(255,255,255,0.03); }
     td {
-      padding: 0.5rem 0.8rem;
+      padding: 0.5rem 0.7rem;
       text-align: right;
       background: var(--card);
     }
@@ -163,10 +184,11 @@
   <header>
     <span class="date-badge">2026-06-22</span>
     <h1>Daily Central Command Dashboard</h1>
-    <p>Auto-updated daily &middot; Last generated 2026-06-23 01:49 UTC</p>
+    <p>Auto-updated daily &middot; Last generated 2026-06-23 02:00 UTC</p>
   </header>
 
-  <!-- KPI Cards -->
+  <!-- Core KPIs -->
+  <div class="section-title">Core Metrics</div>
   <div class="kpi-grid">
     <div class="kpi-card">
       <div class="label">Sessions</div>
@@ -186,12 +208,48 @@
     <div class="kpi-card">
       <div class="label">Ad Spend</div>
       <div class="source">Meta</div>
-      <div class="value">$102.68</div>
+      <div class="value">$104.76</div>
     </div>
     <div class="kpi-card">
       <div class="label">CVR</div>
       <div class="source">Orders / Sessions</div>
       <div class="value">3.06%</div>
+    </div>
+  </div>
+
+  <!-- Funnel & Customer KPIs -->
+  <div class="section-title">Funnel &amp; Customers</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="label">Add to Carts</div>
+      <div class="source">GA4</div>
+      <div class="value">8</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">ATC → Purchase</div>
+      <div class="source">Orders / ATCs</div>
+      <div class="value">37.5%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">New Customers</div>
+      <div class="source">Shopify</div>
+      <div class="value">3</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Returning Customers</div>
+      <div class="source">Shopify</div>
+      <div class="value">0</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Customer Mix</div>
+      <div class="source">New / Returning</div>
+      <div class="customer-split">
+        
+        
+        <span class="tag tag-new">100% New</span>
+        <span class="tag tag-returning">0% Repeat</span>
+        
+      </div>
     </div>
   </div>
 
@@ -219,192 +277,358 @@
           <tr>
             <th>Date</th>
             <th>Sessions</th>
+            <th>ATCs</th>
             <th>Orders</th>
             <th>Revenue</th>
             <th>Ad Spend</th>
             <th>CVR</th>
+            <th>ATC→Purch</th>
+            <th>New</th>
+            <th>Returning</th>
           </tr>
         </thead>
         <tbody>
           
           
+          
+          
+          
+          
           <tr>
             <td>2026-06-22</td>
             <td>98</td>
+            <td>0</td>
+            <td>8</td>
+            <td>$3.00</td>
+            <td>$46.92</td>
+            <td class="cvr-high">8.16%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          
+          
+          
+          
+          
+          
+          <tr>
+            <td>2026-06-22</td>
+            <td>98</td>
+            <td>0</td>
             <td>3</td>
             <td>$140.75</td>
             <td>$102.68</td>
             <td class="cvr-high">3.06%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
+          
+          
+          
+          
           
           
           <tr>
             <td>2026-06-22</td>
             <td>93</td>
+            <td>0</td>
             <td>3</td>
             <td>$140.75</td>
             <td>$99.58</td>
             <td class="cvr-high">3.23%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
+          
+          
+          
+          
           
           
           <tr>
             <td>2026-06-21</td>
             <td>148</td>
+            <td>0</td>
             <td>3</td>
             <td>$100.96</td>
             <td>$130.29</td>
             <td class="">2.03%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
+          
+          
+          
+          
           
           
           <tr>
             <td>2026-06-20</td>
             <td>138</td>
+            <td>0</td>
             <td>6</td>
             <td>$217.93</td>
             <td>$113.97</td>
             <td class="cvr-high">4.35%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
+          
+          
+          
+          
           
           
           <tr>
             <td>2026-06-19</td>
             <td>135</td>
+            <td>0</td>
             <td>5</td>
             <td>$202.94</td>
             <td>$119.05</td>
             <td class="cvr-high">3.70%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
+          
+          
+          
+          
           
           
           <tr>
             <td>2026-06-18</td>
             <td>133</td>
+            <td>0</td>
             <td>5</td>
             <td>$199.95</td>
             <td>$114.95</td>
             <td class="cvr-high">3.76%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
+          
+          
+          
+          
           
           
           <tr>
             <td>2026-06-18</td>
             <td>133</td>
+            <td>0</td>
             <td>5</td>
             <td>$199.95</td>
             <td>$114.95</td>
             <td class="cvr-high">3.76%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
+          
+          
+          
+          
           
           
           <tr>
             <td>2026-06-18</td>
             <td>133</td>
+            <td>0</td>
             <td>5</td>
             <td>$199.95</td>
             <td>$114.83</td>
             <td class="cvr-high">3.76%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
+          
+          
+          
+          
           
           
           <tr>
             <td>2026-06-17</td>
             <td>137</td>
+            <td>0</td>
             <td>3</td>
             <td>$119.97</td>
             <td>$119.05</td>
             <td class="">2.19%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
+          
+          
+          
+          
           
           
           <tr>
             <td>2026-06-16</td>
             <td>173</td>
+            <td>0</td>
             <td>4</td>
             <td>$139.21</td>
             <td>$120.33</td>
             <td class="">2.31%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
+          
+          
+          
+          
           
           
           <tr>
             <td>2026-06-15</td>
             <td>213</td>
+            <td>0</td>
             <td>5</td>
             <td>$170.92</td>
             <td>$113.89</td>
             <td class="">2.35%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
+          
+          
+          
+          
           
           
           <tr>
             <td>2026-06-14</td>
             <td>338</td>
+            <td>0</td>
             <td>3</td>
             <td>$119.97</td>
             <td>$145.36</td>
             <td class="">0.89%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
+          
+          
+          
+          
           
           
           <tr>
             <td>2026-06-13</td>
             <td>131</td>
+            <td>0</td>
             <td>1</td>
             <td>$39.99</td>
             <td>$112.79</td>
             <td class="">0.76%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
+          
+          
+          
+          
           
           
           <tr>
             <td>2026-06-12</td>
             <td>278</td>
+            <td>0</td>
             <td>2</td>
             <td>$72.96</td>
             <td>$148.12</td>
             <td class="">0.72%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
+          
+          
+          
+          
           
           
           <tr>
             <td>2026-06-12</td>
             <td>278</td>
+            <td>0</td>
             <td>2</td>
             <td>$72.96</td>
             <td>$148.12</td>
             <td class="">0.72%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
+          
+          
+          
+          
           
           
           <tr>
             <td>2026-06-12</td>
             <td>278</td>
+            <td>0</td>
             <td>2</td>
             <td>$72.96</td>
             <td>$147.93</td>
             <td class="">0.72%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
+          
+          
+          
+          
           
           
           <tr>
             <td>2026-06-12</td>
             <td>278</td>
+            <td>0</td>
             <td>2</td>
             <td>$72.96</td>
             <td>$147.93</td>
             <td class="">0.72%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
+          
+          
+          
+          
           
           
           <tr>
             <td>2026-06-12</td>
             <td>63</td>
+            <td>0</td>
             <td>2</td>
             <td>$72.96</td>
             <td>$137.55</td>
             <td class="cvr-high">3.17%</td>
+            <td>0.0%</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
           
         </tbody>
