@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daily KPI Dashboard</title>
+  <title>Daily Central Command Dashboard</title>
   <style>
     :root {
       --bg: #0f1117;
@@ -11,9 +11,8 @@
       --border: #2a2d3a;
       --text: #e4e4e7;
       --muted: #8b8d98;
-      --ga4: #4285F4;
-      --shopify: #96BF48;
-      --meta: #1877F2;
+      --blue: #2563eb;
+      --green: #2CA01C;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -24,15 +23,12 @@
       max-width: 1200px;
       margin: 0 auto;
     }
-    header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
+    header { text-align: center; margin-bottom: 2rem; }
     header h1 { font-size: 1.8rem; font-weight: 700; }
     header p { color: var(--muted); margin-top: 0.25rem; font-size: 0.9rem; }
     .date-badge {
       display: inline-block;
-      background: #2563eb;
+      background: var(--blue);
       color: white;
       padding: 0.3rem 1rem;
       border-radius: 999px;
@@ -42,51 +38,41 @@
     }
 
     /* KPI Cards */
-    .section-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin: 1.5rem 0 0.75rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .section-title .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      display: inline-block;
-    }
     .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(5, 1fr);
       gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    @media (max-width: 900px) {
+      .kpi-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
     }
     .kpi-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1.25rem;
+      text-align: center;
     }
     .kpi-card .label {
-      font-size: 0.8rem;
+      font-size: 0.72rem;
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
+    .kpi-card .source {
+      font-size: 0.62rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
     .kpi-card .value {
       font-size: 1.8rem;
       font-weight: 700;
-      margin-top: 0.25rem;
+      margin-top: 0.3rem;
     }
 
     /* Trend charts */
-    .trends {
-      margin-top: 2.5rem;
-    }
-    .trends h2 {
-      font-size: 1.3rem;
-      margin-bottom: 1rem;
-    }
+    .trends h2 { font-size: 1.3rem; margin-bottom: 1rem; }
     .chart-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -98,18 +84,71 @@
       border-radius: 12px;
       overflow: hidden;
     }
-    .chart-card img {
-      width: 100%;
-      display: block;
-    }
-
-    /* Empty state */
+    .chart-card img { width: 100%; display: block; }
     .empty-state {
       text-align: center;
       padding: 3rem;
       color: var(--muted);
       font-style: italic;
     }
+
+    /* Daily log table */
+    .log-section { margin-top: 2.5rem; }
+    .log-section h2 { font-size: 1.3rem; margin-bottom: 1rem; }
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+    thead th {
+      background: #1e2130;
+      padding: 0.6rem 0.8rem;
+      font-weight: 600;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 2px solid var(--border);
+      text-align: right;
+    }
+    thead th:first-child { text-align: left; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: rgba(255,255,255,0.03); }
+    td {
+      padding: 0.5rem 0.8rem;
+      text-align: right;
+      background: var(--card);
+    }
+    td:first-child {
+      text-align: left;
+      font-weight: 500;
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background: var(--card);
+    }
+    .cvr-high { color: var(--green); font-weight: 700; }
+
+    .nav-links {
+      text-align: center;
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .nav-link {
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .nav-link:hover { text-decoration: underline; }
 
     footer {
       text-align: center;
@@ -122,64 +161,37 @@
 <body>
 
   <header>
-    <span class="date-badge">2026-06-21</span>
-    <h1>Daily KPI Dashboard</h1>
-    <p>Auto-updated daily &middot; Last generated 2026-06-22 13:28 UTC</p>
+    <span class="date-badge">2026-06-22</span>
+    <h1>Daily Central Command Dashboard</h1>
+    <p>Auto-updated daily &middot; Last generated 2026-06-23 01:38 UTC</p>
   </header>
 
-  <!-- GA4 -->
-  <div class="section-title">
-    <span class="dot" style="background: var(--ga4)"></span>
-    Google Analytics
-  </div>
+  <!-- KPI Cards -->
   <div class="kpi-grid">
     <div class="kpi-card">
       <div class="label">Sessions</div>
-      <div class="value">148</div>
+      <div class="source">GA4</div>
+      <div class="value">93</div>
     </div>
-    <div class="kpi-card">
-      <div class="label">Conversion Rate</div>
-      <div class="value">1.35%</div>
-    </div>
-  </div>
-
-  <!-- Shopify -->
-  <div class="section-title">
-    <span class="dot" style="background: var(--shopify)"></span>
-    Shopify
-  </div>
-  <div class="kpi-grid">
     <div class="kpi-card">
       <div class="label">Orders</div>
+      <div class="source">Shopify</div>
       <div class="value">3</div>
     </div>
     <div class="kpi-card">
       <div class="label">Revenue</div>
-      <div class="value">$100.96</div>
+      <div class="source">Shopify</div>
+      <div class="value">$140.75</div>
     </div>
-    <div class="kpi-card">
-      <div class="label">AOV</div>
-      <div class="value">$33.65</div>
-    </div>
-  </div>
-
-  <!-- Meta -->
-  <div class="section-title">
-    <span class="dot" style="background: var(--meta)"></span>
-    Meta Ads
-  </div>
-  <div class="kpi-grid">
     <div class="kpi-card">
       <div class="label">Ad Spend</div>
-      <div class="value">$130.29</div>
+      <div class="source">Meta</div>
+      <div class="value">$99.58</div>
     </div>
     <div class="kpi-card">
-      <div class="label">ROAS</div>
-      <div class="value">0.14x</div>
-    </div>
-    <div class="kpi-card">
-      <div class="label">CPA</div>
-      <div class="value">$130.29</div>
+      <div class="label">CVR</div>
+      <div class="source">Orders / Sessions</div>
+      <div class="value">3.23%</div>
     </div>
   </div>
 
@@ -188,29 +200,213 @@
     <h2>Trends</h2>
     
     <div class="chart-grid">
-      <div class="chart-card"><img src="assets/ga4_sessions.png" alt="GA4 Sessions"></div>
-      <div class="chart-card"><img src="assets/ga4_conversion_rate.png" alt="GA4 Conversion Rate"></div>
-      <div class="chart-card"><img src="assets/ga4_revenue.png" alt="GA4 Revenue"></div>
-      <div class="chart-card"><img src="assets/shopify_orders.png" alt="Shopify Orders"></div>
-      <div class="chart-card"><img src="assets/shopify_revenue.png" alt="Shopify Revenue"></div>
-      <div class="chart-card"><img src="assets/shopify_aov.png" alt="Shopify AOV"></div>
-      <div class="chart-card"><img src="assets/meta_spend.png" alt="Meta Spend"></div>
-      <div class="chart-card"><img src="assets/meta_roas.png" alt="Meta ROAS"></div>
-      <div class="chart-card"><img src="assets/meta_cpa.png" alt="Meta CPA"></div>
+      <div class="chart-card"><img src="assets/sessions.png" alt="Sessions"></div>
+      <div class="chart-card"><img src="assets/orders.png" alt="Orders"></div>
+      <div class="chart-card"><img src="assets/revenue.png" alt="Revenue"></div>
+      <div class="chart-card"><img src="assets/ad_spend.png" alt="Ad Spend"></div>
+      <div class="chart-card"><img src="assets/cvr.png" alt="CVR"></div>
     </div>
     
   </div>
 
-  <div style="text-align: center; margin-top: 2rem; display: flex; gap: 2rem; justify-content: center;">
-    <a href="performance.html" style="color: #2563eb; text-decoration: none; font-size: 0.95rem; font-weight: 600;">
-      Performance Log &rarr;
-    </a>
-    <a href="analytics.html" style="color: #4285F4; text-decoration: none; font-size: 0.95rem; font-weight: 600;">
-      GA4 Analytics &rarr;
-    </a>
-    <a href="landing-pages.html" style="color: #4285F4; text-decoration: none; font-size: 0.95rem; font-weight: 600;">
-      Landing Pages &rarr;
-    </a>
+  <!-- Daily Performance Log -->
+  
+  <div class="log-section">
+    <h2>Daily Performance Log</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Sessions</th>
+            <th>Orders</th>
+            <th>Revenue</th>
+            <th>Ad Spend</th>
+            <th>CVR</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          
+          <tr>
+            <td>2026-06-22</td>
+            <td>93</td>
+            <td>3</td>
+            <td>$140.75</td>
+            <td>$99.58</td>
+            <td class="cvr-high">3.23%</td>
+          </tr>
+          
+          
+          <tr>
+            <td>2026-06-21</td>
+            <td>148</td>
+            <td>3</td>
+            <td>$100.96</td>
+            <td>$130.29</td>
+            <td class="">2.03%</td>
+          </tr>
+          
+          
+          <tr>
+            <td>2026-06-20</td>
+            <td>138</td>
+            <td>6</td>
+            <td>$217.93</td>
+            <td>$113.97</td>
+            <td class="cvr-high">4.35%</td>
+          </tr>
+          
+          
+          <tr>
+            <td>2026-06-19</td>
+            <td>135</td>
+            <td>5</td>
+            <td>$202.94</td>
+            <td>$119.05</td>
+            <td class="cvr-high">3.70%</td>
+          </tr>
+          
+          
+          <tr>
+            <td>2026-06-18</td>
+            <td>133</td>
+            <td>5</td>
+            <td>$199.95</td>
+            <td>$114.95</td>
+            <td class="cvr-high">3.76%</td>
+          </tr>
+          
+          
+          <tr>
+            <td>2026-06-18</td>
+            <td>133</td>
+            <td>5</td>
+            <td>$199.95</td>
+            <td>$114.95</td>
+            <td class="cvr-high">3.76%</td>
+          </tr>
+          
+          
+          <tr>
+            <td>2026-06-18</td>
+            <td>133</td>
+            <td>5</td>
+            <td>$199.95</td>
+            <td>$114.83</td>
+            <td class="cvr-high">3.76%</td>
+          </tr>
+          
+          
+          <tr>
+            <td>2026-06-17</td>
+            <td>137</td>
+            <td>3</td>
+            <td>$119.97</td>
+            <td>$119.05</td>
+            <td class="">2.19%</td>
+          </tr>
+          
+          
+          <tr>
+            <td>2026-06-16</td>
+            <td>173</td>
+            <td>4</td>
+            <td>$139.21</td>
+            <td>$120.33</td>
+            <td class="">2.31%</td>
+          </tr>
+          
+          
+          <tr>
+            <td>2026-06-15</td>
+            <td>213</td>
+            <td>5</td>
+            <td>$170.92</td>
+            <td>$113.89</td>
+            <td class="">2.35%</td>
+          </tr>
+          
+          
+          <tr>
+            <td>2026-06-14</td>
+            <td>338</td>
+            <td>3</td>
+            <td>$119.97</td>
+            <td>$145.36</td>
+            <td class="">0.89%</td>
+          </tr>
+          
+          
+          <tr>
+            <td>2026-06-13</td>
+            <td>131</td>
+            <td>1</td>
+            <td>$39.99</td>
+            <td>$112.79</td>
+            <td class="">0.76%</td>
+          </tr>
+          
+          
+          <tr>
+            <td>2026-06-12</td>
+            <td>278</td>
+            <td>2</td>
+            <td>$72.96</td>
+            <td>$148.12</td>
+            <td class="">0.72%</td>
+          </tr>
+          
+          
+          <tr>
+            <td>2026-06-12</td>
+            <td>278</td>
+            <td>2</td>
+            <td>$72.96</td>
+            <td>$148.12</td>
+            <td class="">0.72%</td>
+          </tr>
+          
+          
+          <tr>
+            <td>2026-06-12</td>
+            <td>278</td>
+            <td>2</td>
+            <td>$72.96</td>
+            <td>$147.93</td>
+            <td class="">0.72%</td>
+          </tr>
+          
+          
+          <tr>
+            <td>2026-06-12</td>
+            <td>278</td>
+            <td>2</td>
+            <td>$72.96</td>
+            <td>$147.93</td>
+            <td class="">0.72%</td>
+          </tr>
+          
+          
+          <tr>
+            <td>2026-06-12</td>
+            <td>63</td>
+            <td>2</td>
+            <td>$72.96</td>
+            <td>$137.55</td>
+            <td class="cvr-high">3.17%</td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+
+  <div class="nav-links">
+    <a class="nav-link" href="meta-ads.html">Meta Ads &rarr;</a>
+    <a class="nav-link" href="analytics.html">GA4 Analytics &rarr;</a>
+    <a class="nav-link" href="landing-pages.html">Landing Pages &rarr;</a>
   </div>
 
   <footer>

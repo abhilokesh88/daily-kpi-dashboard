@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meta Ads Daily Performance — 2026-06-22</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card: #1a1d27;
+      --border: #2a2d3a;
+      --text: #e4e4e7;
+      --muted: #8b8d98;
+      --meta: #1877F2;
+      --green: #2CA01C;
+      --blue: #2563eb;
+      --yellow: #F7B928;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    header { text-align: center; margin-bottom: 2rem; }
+    header h1 { font-size: 1.8rem; font-weight: 700; }
+    header p { color: var(--muted); margin-top: 0.25rem; font-size: 0.9rem; }
+    .date-badge {
+      display: inline-block;
+      background: var(--meta);
+      color: white;
+      padding: 0.3rem 1rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 2.5rem 0 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .section-title .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .section-desc {
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Metric cards */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 1rem;
+    }
+    .metric-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+    .metric-card .label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+    .metric-card .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-top: 0.2rem;
+    }
+    .metric-card .formula {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+      font-style: italic;
+    }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+    thead th {
+      background: #1e2130;
+      padding: 0.55rem 0.7rem;
+      font-weight: 600;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 2px solid var(--border);
+      text-align: right;
+    }
+    thead th:first-child { text-align: left; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: rgba(255,255,255,0.03); }
+    td {
+      padding: 0.5rem 0.7rem;
+      text-align: right;
+      background: var(--card);
+    }
+    td:first-child {
+      text-align: left;
+      font-weight: 500;
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background: var(--card);
+    }
+
+    .col-group-header {
+      background: #1e2130 !important;
+      font-weight: 700;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid var(--border);
+    }
+    .col-raw { color: var(--meta); }
+    .col-calc { color: var(--green); }
+
+    thead tr:nth-child(2) th {
+      background: var(--card);
+      padding: 0.4rem 0.6rem;
+      font-weight: 600;
+      font-size: 0.68rem;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-links {
+      text-align: center;
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .nav-link {
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .nav-link:hover { text-decoration: underline; }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span class="date-badge">2026-06-22</span>
+    <h1>Meta Ads Daily Performance</h1>
+    <p>Paid media metrics &amp; calculated KPIs &middot; Generated 2026-06-23 01:38 UTC</p>
+  </header>
+
+  <!-- ═══════════ RAW METRICS ═══════════ -->
+
+  <div class="section-title">
+    <span class="dot" style="background: var(--meta)"></span>
+    Raw Metrics
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-card">
+      <div class="label">Purchases</div>
+      <div class="value">1</div>
+      <div class="formula">Meta-reported purchases</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">Impressions</div>
+      <div class="value">3,538</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">Reach</div>
+      <div class="value">2,915</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">Link Clicks</div>
+      <div class="value">79</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">3-Second Plays</div>
+      <div class="value">2,502</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">25% Plays</div>
+      <div class="value">374</div>
+    </div>
+  </div>
+
+  <!-- ═══════════ CALCULATED KPIs ═══════════ -->
+
+  <div class="section-title">
+    <span class="dot" style="background: var(--green)"></span>
+    Calculated KPIs
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-card">
+      <div class="label">MER</div>
+      <div class="value">1.41x</div>
+      <div class="formula">Shopify Revenue / Meta Spend</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">CPP</div>
+      <div class="value">$33.19</div>
+      <div class="formula">Meta Spend / Shopify Orders</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">CTR</div>
+      <div class="value">2.23%</div>
+      <div class="formula">Link Clicks / Impressions</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">Frequency</div>
+      <div class="value">1.2</div>
+      <div class="formula">Impressions / Reach</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">CPC</div>
+      <div class="value">$1.26</div>
+      <div class="formula">Meta Spend / Link Clicks</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">CPM</div>
+      <div class="value">$28.15</div>
+      <div class="formula">(Meta Spend / Impressions) &times; 1,000</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">Hook Rate</div>
+      <div class="value">70.7%</div>
+      <div class="formula">3s Plays / Impressions</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">Hold Rate</div>
+      <div class="value">14.9%</div>
+      <div class="formula">25% Plays / 3s Plays</div>
+    </div>
+  </div>
+
+  <!-- ═══════════ DAILY PERFORMANCE LOG ═══════════ -->
+
+  
+  <div class="section-title">
+    <span class="dot" style="background: var(--yellow)"></span>
+    Daily Performance Log
+  </div>
+  <p class="section-desc">Running log of raw metrics and calculated KPIs</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th rowspan="2" class="col-group-header">Date</th>
+          <th colspan="6" class="col-group-header col-raw">Raw Metrics</th>
+          <th colspan="8" class="col-group-header col-calc">Calculated KPIs</th>
+        </tr>
+        <tr>
+          <th>Purch.</th>
+          <th>Impr.</th>
+          <th>Reach</th>
+          <th>Clicks</th>
+          <th>3s</th>
+          <th>25%</th>
+          <th>MER</th>
+          <th>CPP</th>
+          <th>CTR</th>
+          <th>Freq.</th>
+          <th>CPC</th>
+          <th>CPM</th>
+          <th>Hook</th>
+          <th>Hold</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>2026-06-22</td>
+          <td>1</td>
+          <td>3,538</td>
+          <td>2,915</td>
+          <td>79</td>
+          <td>2,502</td>
+          <td>374</td>
+          <td>1.41x</td>
+          <td>$33.19</td>
+          <td>2.23%</td>
+          <td>1.2</td>
+          <td>$1.26</td>
+          <td>$28.15</td>
+          <td>70.7%</td>
+          <td>14.9%</td>
+        </tr>
+        
+        <tr>
+          <td>2026-06-21</td>
+          <td>1</td>
+          <td>4,593</td>
+          <td>4,018</td>
+          <td>109</td>
+          <td>2,939</td>
+          <td>523</td>
+          <td>0.77x</td>
+          <td>$130.29</td>
+          <td>2.37%</td>
+          <td>1.1</td>
+          <td>$1.20</td>
+          <td>$28.37</td>
+          <td>64.0%</td>
+          <td>17.8%</td>
+        </tr>
+        
+        <tr>
+          <td>2026-06-20</td>
+          <td>4</td>
+          <td>3,847</td>
+          <td>3,387</td>
+          <td>82</td>
+          <td>2,658</td>
+          <td>507</td>
+          <td>1.91x</td>
+          <td>$28.49</td>
+          <td>2.13%</td>
+          <td>1.1</td>
+          <td>$1.39</td>
+          <td>$29.63</td>
+          <td>69.1%</td>
+          <td>19.1%</td>
+        </tr>
+        
+        <tr>
+          <td>2026-06-19</td>
+          <td>2</td>
+          <td>4,194</td>
+          <td>3,410</td>
+          <td>81</td>
+          <td>3,148</td>
+          <td>698</td>
+          <td>1.70x</td>
+          <td>$59.52</td>
+          <td>1.93%</td>
+          <td>1.2</td>
+          <td>$1.47</td>
+          <td>$28.39</td>
+          <td>75.1%</td>
+          <td>22.2%</td>
+        </tr>
+        
+        <tr>
+          <td>2026-06-18</td>
+          <td>4</td>
+          <td>3,686</td>
+          <td>2,933</td>
+          <td>76</td>
+          <td>2,258</td>
+          <td>810</td>
+          <td>1.74x</td>
+          <td>$28.74</td>
+          <td>2.06%</td>
+          <td>1.3</td>
+          <td>$1.51</td>
+          <td>$31.19</td>
+          <td>61.3%</td>
+          <td>35.9%</td>
+        </tr>
+        
+        <tr>
+          <td>2026-06-18</td>
+          <td>4</td>
+          <td>3,686</td>
+          <td>2,933</td>
+          <td>76</td>
+          <td>2,258</td>
+          <td>810</td>
+          <td>1.74x</td>
+          <td>$28.74</td>
+          <td>2.06%</td>
+          <td>1.3</td>
+          <td>$1.51</td>
+          <td>$31.19</td>
+          <td>61.3%</td>
+          <td>35.9%</td>
+        </tr>
+        
+        <tr>
+          <td>2026-06-18</td>
+          <td>4</td>
+          <td>3,678</td>
+          <td>2,932</td>
+          <td>76</td>
+          <td>2,254</td>
+          <td>809</td>
+          <td>1.74x</td>
+          <td>$28.71</td>
+          <td>2.07%</td>
+          <td>1.3</td>
+          <td>$1.51</td>
+          <td>$31.22</td>
+          <td>61.3%</td>
+          <td>35.9%</td>
+        </tr>
+        
+        <tr>
+          <td>2026-06-17</td>
+          <td>3</td>
+          <td>3,746</td>
+          <td>3,097</td>
+          <td>91</td>
+          <td>2,570</td>
+          <td>591</td>
+          <td>1.01x</td>
+          <td>$39.68</td>
+          <td>2.43%</td>
+          <td>1.2</td>
+          <td>$1.31</td>
+          <td>$31.78</td>
+          <td>68.6%</td>
+          <td>23.0%</td>
+        </tr>
+        
+        <tr>
+          <td>2026-06-16</td>
+          <td>1</td>
+          <td>3,889</td>
+          <td>3,358</td>
+          <td>115</td>
+          <td>2,934</td>
+          <td>1,045</td>
+          <td>1.16x</td>
+          <td>$120.33</td>
+          <td>2.96%</td>
+          <td>1.2</td>
+          <td>$1.05</td>
+          <td>$30.94</td>
+          <td>75.4%</td>
+          <td>35.6%</td>
+        </tr>
+        
+        <tr>
+          <td>2026-06-15</td>
+          <td>2</td>
+          <td>3,952</td>
+          <td>3,148</td>
+          <td>126</td>
+          <td>2,738</td>
+          <td>1,036</td>
+          <td>1.50x</td>
+          <td>$56.95</td>
+          <td>3.19%</td>
+          <td>1.3</td>
+          <td>$0.90</td>
+          <td>$28.82</td>
+          <td>69.3%</td>
+          <td>37.8%</td>
+        </tr>
+        
+        <tr>
+          <td>2026-06-14</td>
+          <td>3</td>
+          <td>3,562</td>
+          <td>3,150</td>
+          <td>163</td>
+          <td>1,022</td>
+          <td>401</td>
+          <td>0.83x</td>
+          <td>$48.45</td>
+          <td>4.58%</td>
+          <td>1.1</td>
+          <td>$0.89</td>
+          <td>$40.81</td>
+          <td>28.7%</td>
+          <td>39.2%</td>
+        </tr>
+        
+        <tr>
+          <td>2026-06-13</td>
+          <td>0</td>
+          <td>2,528</td>
+          <td>2,143</td>
+          <td>100</td>
+          <td>61</td>
+          <td>9</td>
+          <td>0.35x</td>
+          <td>$0.00</td>
+          <td>3.96%</td>
+          <td>1.2</td>
+          <td>$1.13</td>
+          <td>$44.62</td>
+          <td>2.4%</td>
+          <td>14.8%</td>
+        </tr>
+        
+        <tr>
+          <td>2026-06-12</td>
+          <td>2</td>
+          <td>3,293</td>
+          <td>2,881</td>
+          <td>109</td>
+          <td>117</td>
+          <td>42</td>
+          <td>0.49x</td>
+          <td>$74.06</td>
+          <td>3.31%</td>
+          <td>1.1</td>
+          <td>$1.36</td>
+          <td>$44.98</td>
+          <td>3.6%</td>
+          <td>35.9%</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+  
+
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">&larr; Central Command</a>
+    <a class="nav-link" href="analytics.html">GA4 Analytics</a>
+    <a class="nav-link" href="landing-pages.html">Landing Pages &rarr;</a>
+  </div>
+
+  <footer>
+    Powered by GitHub Actions &middot; Data from Meta Ads, Shopify, GA4
+  </footer>
+
+</body>
+</html>
