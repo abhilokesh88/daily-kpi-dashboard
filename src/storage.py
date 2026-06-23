@@ -28,6 +28,7 @@ FIELDS = [
     "shopify_returning_customers",
     # Meta
     "meta_spend",
+    "meta_purchases",
     "meta_roas",
     "meta_cpa",
 ]
@@ -48,6 +49,7 @@ def save(ga4: dict, shopify: dict, meta: dict) -> None:
         "shopify_new_customers": shopify.get("new_customers", 0),
         "shopify_returning_customers": shopify.get("returning_customers", 0),
         "meta_spend": meta.get("spend", 0),
+        "meta_purchases": meta.get("purchases", 0),
         "meta_roas": meta.get("roas", 0),
         "meta_cpa": meta.get("cpa", 0),
     }

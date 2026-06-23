@@ -215,6 +215,11 @@
       <div class="source">Orders / Sessions</div>
       <div class="value">{{ "%.2f" | format(cvr | float) }}%</div>
     </div>
+    <div class="kpi-card">
+      <div class="label">CPP</div>
+      <div class="source">Meta Spend / Meta Purchases</div>
+      <div class="value">${{ "{:,.2f}".format(cpp | float) }}</div>
+    </div>
   </div>
 
   <!-- Funnel & Customer KPIs -->
@@ -287,6 +292,7 @@
             <th>Orders</th>
             <th>Revenue</th>
             <th>Ad Spend</th>
+            <th>CPP</th>
             <th>CVR</th>
             <th>ATC→Purch</th>
             <th>New</th>
@@ -298,15 +304,19 @@
           {% set r_sessions = row.ga4_sessions | default(0) | float %}
           {% set r_atc = row.ga4_atc | default(0) | float %}
           {% set r_orders = row.shopify_orders | default(0) | float %}
+          {% set r_meta_spend = row.meta_spend | default(0) | float %}
+          {% set r_meta_purchases = row.meta_purchases | default(0) | float %}
           {% set row_cvr = (r_orders / r_sessions * 100) if r_sessions else 0 %}
           {% set row_atc_purch = (r_orders / r_atc * 100) if r_atc else 0 %}
+          {% set row_cpp = (r_meta_spend / r_meta_purchases) if r_meta_purchases else 0 %}
           <tr>
             <td>{{ row.date }}</td>
             <td>{{ "{:,.0f}".format(r_sessions) }}</td>
             <td>{{ "{:,.0f}".format(r_atc) }}</td>
             <td>{{ "{:,.0f}".format(r_orders) }}</td>
             <td>${{ "{:,.2f}".format(row.shopify_revenue | default(0) | float) }}</td>
-            <td>${{ "{:,.2f}".format(row.meta_spend | default(0) | float) }}</td>
+            <td>${{ "{:,.2f}".format(r_meta_spend) }}</td>
+            <td>${{ "{:,.2f}".format(row_cpp) }}</td>
             <td class="{{ 'cvr-high' if row_cvr >= 3 else '' }}">{{ "%.2f" | format(row_cvr) }}%</td>
             <td>{{ "%.1f" | format(row_atc_purch) }}%</td>
             <td>{{ "{:,.0f}".format(row.shopify_new_customers | default(0) | float) }}</td>
