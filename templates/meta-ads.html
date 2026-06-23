@@ -316,7 +316,7 @@
           <td>{{ row.date }}</td>
           <td>${{ "{:,.2f}".format(row.spend) }}</td>
           <td>{{ "{:,.0f}".format(row.purchases) }}</td>
-          <td>${{ "{:,.2f}".format(row.meta_revenue) }}</td>
+          <td>${{ "{:,.2f}".format(row.meta_revenue | default(0) | float) }}</td>
           <td>{{ "{:,.0f}".format(row.impressions) }}</td>
           <td>{{ "{:,.0f}".format(row.reach) }}</td>
           <td>{{ "{:,.0f}".format(row.link_clicks) }}</td>
