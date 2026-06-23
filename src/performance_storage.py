@@ -22,7 +22,7 @@ FIELDS = [
     "spend", "purchases", "meta_revenue", "impressions", "reach",
     "link_clicks", "video_3s", "video_25",
     # Calculated — Economics
-    "mer", "cpp", "ctr", "cvr", "atc_rate",
+    "roas", "mer", "cpp", "ctr", "cvr", "atc_rate",
     # Calculated — Funnel
     "frequency", "cpm", "cpc",
     # Calculated — Creative

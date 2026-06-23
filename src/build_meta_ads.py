@@ -25,6 +25,7 @@ def build_meta_ads(ga4: dict, shopify: dict, meta: dict) -> None:
     spend = meta.get("spend", 0)
     purchases = meta.get("purchases", 0)
     meta_revenue = meta.get("revenue", 0)
+    roas = meta.get("roas", 0)
     impressions = meta.get("impressions", 0)
     reach = meta.get("reach", 0)
     link_clicks = meta.get("link_clicks", 0)
@@ -32,6 +33,7 @@ def build_meta_ads(ga4: dict, shopify: dict, meta: dict) -> None:
     video_25 = meta.get("video_plays_25", 0)
 
     kpis = {
+        "roas": round(roas, 2),
         "mer": round(meta_revenue / spend, 2) if spend else 0,
         "cpp": round(spend / purchases, 2) if purchases else 0,
         "ctr": round(link_clicks / impressions * 100, 2) if impressions else 0,

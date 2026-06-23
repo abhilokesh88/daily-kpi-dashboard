@@ -233,6 +233,11 @@
 
   <div class="metric-grid">
     <div class="metric-card">
+      <div class="label">ROAS</div>
+      <div class="value">{{ "%.2f" | format(kpis.roas) }}x</div>
+      <div class="formula">Meta-reported Return on Ad Spend</div>
+    </div>
+    <div class="metric-card">
       <div class="label">MER</div>
       <div class="value">{{ "%.2f" | format(kpis.mer) }}x</div>
       <div class="formula">Meta Revenue / Meta Spend</div>
@@ -289,7 +294,7 @@
         <tr>
           <th rowspan="2" class="col-group-header">Date</th>
           <th colspan="8" class="col-group-header col-raw">Raw Metrics</th>
-          <th colspan="8" class="col-group-header col-calc">Calculated KPIs</th>
+          <th colspan="9" class="col-group-header col-calc">Calculated KPIs</th>
         </tr>
         <tr>
           <th>Spend</th>
@@ -300,6 +305,7 @@
           <th>Clicks</th>
           <th>3s</th>
           <th>25%</th>
+          <th>ROAS</th>
           <th>MER</th>
           <th>CPP</th>
           <th>CTR</th>
@@ -322,6 +328,7 @@
           <td>{{ "{:,.0f}".format(row.link_clicks) }}</td>
           <td>{{ "{:,.0f}".format(row.video_3s) }}</td>
           <td>{{ "{:,.0f}".format(row.video_25) }}</td>
+          <td>{{ "%.2f" | format(row.roas | default(0) | float) }}x</td>
           <td>{{ "%.2f" | format(row.mer) }}x</td>
           <td>${{ "{:,.2f}".format(row.cpp) }}</td>
           <td>{{ "%.2f" | format(row.ctr) }}%</td>
