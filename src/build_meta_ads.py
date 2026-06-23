@@ -1,10 +1,8 @@
 """
-Build the daily performance log page at docs/performance.html.
+Build the Meta Ads Daily Performance page at docs/meta-ads.html.
 
 Calculates derived KPIs from raw GA4, Shopify, and Meta data:
-  Economics: MER, CPP, CTR, CVR, ATC Rate
-  Funnel:    Frequency, CPM, CPC
-  Creative:  Hook Rate, Hold Rate
+  MER, CPP, CTR, Frequency, CPC, CPM, Hook Rate, Hold Rate
 """
 
 import os
@@ -16,7 +14,7 @@ from src.config import OUTPUT_DIR, TEMPLATE_DIR
 from src import performance_storage
 
 
-def build_performance(ga4: dict, shopify: dict, meta: dict) -> None:
+def build_meta_ads(ga4: dict, shopify: dict, meta: dict) -> None:
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     sessions = ga4.get("sessions", 0)
@@ -34,7 +32,7 @@ def build_performance(ga4: dict, shopify: dict, meta: dict) -> None:
 
     kpis = {
         "mer": round(revenue / spend, 2) if spend else 0,
-        "cpp": round(spend / purchases, 2) if purchases else 0,
+        "cpp": round(spend / orders, 2) if orders else 0,
         "ctr": round(link_clicks / impressions * 100, 2) if impressions else 0,
         "cvr": round(orders / sessions * 100, 2) if sessions else 0,
         "atc_rate": round(atc / sessions * 100, 2) if sessions else 0,
@@ -65,7 +63,7 @@ def build_performance(ga4: dict, shopify: dict, meta: dict) -> None:
     history = performance_storage.load_history()
 
     env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
-    template = env.get_template("performance.html")
+    template = env.get_template("meta-ads.html")
 
     html = template.render(
         report_date=report_date,
@@ -75,8 +73,8 @@ def build_performance(ga4: dict, shopify: dict, meta: dict) -> None:
         history=history,
     )
 
-    out_path = os.path.join(OUTPUT_DIR, "performance.html")
+    out_path = os.path.join(OUTPUT_DIR, "meta-ads.html")
     with open(out_path, "w") as f:
         f.write(html)
 
-    print(f"  [Performance] Written to {out_path}")
+    print(f"  [Meta Ads] Written to {out_path}")

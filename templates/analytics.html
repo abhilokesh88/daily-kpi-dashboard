@@ -242,13 +242,15 @@
       <div class="label">Add to Carts</div>
       <div class="value">{{ "{:,}".format(summary.add_to_carts) }}</div>
     </div>
-    <div class="summary-card">
-      <div class="label">Purchases</div>
+    <div class="summary-card" style="border-color: var(--yellow);">
+      <div class="label">Purchases <span style="color:var(--yellow); font-size:0.6rem;" title="GA4 may undercount — Shopify is the source of truth for orders">&#9888;</span></div>
       <div class="value">{{ "{:,}".format(summary.purchases) }}</div>
+      <div style="font-size:0.6rem; color:var(--yellow); margin-top:0.2rem;">GA4 estimate — see Shopify for SOT</div>
     </div>
-    <div class="summary-card">
-      <div class="label">Revenue</div>
+    <div class="summary-card" style="border-color: var(--yellow);">
+      <div class="label">Revenue <span style="color:var(--yellow); font-size:0.6rem;" title="GA4 may undercount — Shopify is the source of truth for revenue">&#9888;</span></div>
       <div class="value">${{ "{:,.2f}".format(summary.revenue) }}</div>
+      <div style="font-size:0.6rem; color:var(--yellow); margin-top:0.2rem;">GA4 estimate — see Shopify for SOT</div>
     </div>
     <div class="summary-card">
       <div class="label">CVR</div>
@@ -386,9 +388,9 @@
   {% endif %}
 
   <div class="nav-links">
-    <a class="nav-link" href="index.html">&larr; Daily Dashboard</a>
-    <a class="nav-link" href="landing-pages.html">Landing Pages</a>
-    <a class="nav-link" href="performance.html">Performance Log &rarr;</a>
+    <a class="nav-link" href="index.html">&larr; Central Command</a>
+    <a class="nav-link" href="meta-ads.html">Meta Ads</a>
+    <a class="nav-link" href="landing-pages.html">Landing Pages &rarr;</a>
   </div>
 
   <footer>

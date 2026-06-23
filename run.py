@@ -10,7 +10,7 @@ Main entry point — run this daily (locally or via GitHub Actions).
 """
 
 from src import fetch_ga4, fetch_shopify, fetch_meta
-from src import storage, charts, slack_notify, build_dashboard, build_performance, build_analytics, build_landing_pages
+from src import storage, charts, slack_notify, build_dashboard, build_meta_ads, build_analytics, build_landing_pages
 
 
 def main():
@@ -37,7 +37,7 @@ def main():
     # 4. Build HTML dashboards
     print("\n[4/5] Building dashboards...")
     build_dashboard.build(ga4_data, shopify_data, meta_data, history)
-    build_performance.build_performance(ga4_data, shopify_data, meta_data)
+    build_meta_ads.build_meta_ads(ga4_data, shopify_data, meta_data)
     build_analytics.build_analytics(ga4_summary, ad_performance)
     build_landing_pages.build_landing_pages(lp_data)
 

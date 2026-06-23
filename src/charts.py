@@ -19,7 +19,6 @@ ASSETS_DIR = os.path.join(OUTPUT_DIR, "assets")
 
 
 def generate_all(history: list[dict]) -> None:
-    """Create all trend charts from the history data."""
     os.makedirs(ASSETS_DIR, exist_ok=True)
 
     if len(history) < 2:
@@ -30,67 +29,38 @@ def generate_all(history: list[dict]) -> None:
 
     chart_configs = [
         {
-            "filename": "ga4_sessions.png",
-            "title": "GA4 — Sessions",
+            "filename": "sessions.png",
+            "title": "Sessions (GA4)",
             "values": [r["ga4_sessions"] for r in history],
             "color": "#4285F4",
-            "fmt": "{:,.0f}",
         },
         {
-            "filename": "ga4_conversion_rate.png",
-            "title": "GA4 — Conversion Rate (%)",
-            "values": [r["ga4_conversion_rate"] for r in history],
-            "color": "#34A853",
-            "fmt": "{:.2f}%",
-        },
-        {
-            "filename": "ga4_revenue.png",
-            "title": "GA4 — Revenue ($)",
-            "values": [r["ga4_revenue"] for r in history],
-            "color": "#0F9D58",
-            "fmt": "${:,.2f}",
-        },
-        {
-            "filename": "shopify_orders.png",
-            "title": "Shopify — Orders",
+            "filename": "orders.png",
+            "title": "Orders (Shopify)",
             "values": [r["shopify_orders"] for r in history],
             "color": "#96BF48",
-            "fmt": "{:,.0f}",
         },
         {
-            "filename": "shopify_revenue.png",
-            "title": "Shopify — Revenue ($)",
+            "filename": "revenue.png",
+            "title": "Revenue (Shopify)",
             "values": [r["shopify_revenue"] for r in history],
             "color": "#5E8E3E",
-            "fmt": "${:,.2f}",
         },
         {
-            "filename": "shopify_aov.png",
-            "title": "Shopify — AOV ($)",
-            "values": [r["shopify_aov"] for r in history],
-            "color": "#7AB648",
-            "fmt": "${:,.2f}",
-        },
-        {
-            "filename": "meta_spend.png",
-            "title": "Meta — Ad Spend ($)",
+            "filename": "ad_spend.png",
+            "title": "Ad Spend (Meta)",
             "values": [r["meta_spend"] for r in history],
             "color": "#1877F2",
-            "fmt": "${:,.2f}",
         },
         {
-            "filename": "meta_roas.png",
-            "title": "Meta — ROAS",
-            "values": [r["meta_roas"] for r in history],
-            "color": "#42B72A",
-            "fmt": "{:.2f}x",
-        },
-        {
-            "filename": "meta_cpa.png",
-            "title": "Meta — CPA ($)",
-            "values": [r["meta_cpa"] for r in history],
-            "color": "#F7B928",
-            "fmt": "${:,.2f}",
+            "filename": "cvr.png",
+            "title": "CVR — Orders / Sessions (%)",
+            "values": [
+                round(r["shopify_orders"] / r["ga4_sessions"] * 100, 2)
+                if r["ga4_sessions"] else 0
+                for r in history
+            ],
+            "color": "#2CA01C",
         },
     ]
 
@@ -101,7 +71,6 @@ def generate_all(history: list[dict]) -> None:
 
 
 def _render_chart(dates: list, cfg: dict) -> None:
-    """Render a single trend line chart."""
     fig, ax = plt.subplots(figsize=(8, 3))
 
     ax.plot(dates, cfg["values"], color=cfg["color"], linewidth=2, marker="o", markersize=4)

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daily KPI Dashboard</title>
+  <title>Daily Central Command Dashboard</title>
   <style>
     :root {
       --bg: #0f1117;
@@ -11,9 +11,8 @@
       --border: #2a2d3a;
       --text: #e4e4e7;
       --muted: #8b8d98;
-      --ga4: #4285F4;
-      --shopify: #96BF48;
-      --meta: #1877F2;
+      --blue: #2563eb;
+      --green: #2CA01C;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -24,15 +23,12 @@
       max-width: 1200px;
       margin: 0 auto;
     }
-    header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
+    header { text-align: center; margin-bottom: 2rem; }
     header h1 { font-size: 1.8rem; font-weight: 700; }
     header p { color: var(--muted); margin-top: 0.25rem; font-size: 0.9rem; }
     .date-badge {
       display: inline-block;
-      background: #2563eb;
+      background: var(--blue);
       color: white;
       padding: 0.3rem 1rem;
       border-radius: 999px;
@@ -42,51 +38,41 @@
     }
 
     /* KPI Cards */
-    .section-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin: 1.5rem 0 0.75rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .section-title .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      display: inline-block;
-    }
     .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(5, 1fr);
       gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    @media (max-width: 900px) {
+      .kpi-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
     }
     .kpi-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1.25rem;
+      text-align: center;
     }
     .kpi-card .label {
-      font-size: 0.8rem;
+      font-size: 0.72rem;
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
+    .kpi-card .source {
+      font-size: 0.62rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
     .kpi-card .value {
       font-size: 1.8rem;
       font-weight: 700;
-      margin-top: 0.25rem;
+      margin-top: 0.3rem;
     }
 
     /* Trend charts */
-    .trends {
-      margin-top: 2.5rem;
-    }
-    .trends h2 {
-      font-size: 1.3rem;
-      margin-bottom: 1rem;
-    }
+    .trends h2 { font-size: 1.3rem; margin-bottom: 1rem; }
     .chart-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -98,18 +84,71 @@
       border-radius: 12px;
       overflow: hidden;
     }
-    .chart-card img {
-      width: 100%;
-      display: block;
-    }
-
-    /* Empty state */
+    .chart-card img { width: 100%; display: block; }
     .empty-state {
       text-align: center;
       padding: 3rem;
       color: var(--muted);
       font-style: italic;
     }
+
+    /* Daily log table */
+    .log-section { margin-top: 2.5rem; }
+    .log-section h2 { font-size: 1.3rem; margin-bottom: 1rem; }
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+    thead th {
+      background: #1e2130;
+      padding: 0.6rem 0.8rem;
+      font-weight: 600;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 2px solid var(--border);
+      text-align: right;
+    }
+    thead th:first-child { text-align: left; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: rgba(255,255,255,0.03); }
+    td {
+      padding: 0.5rem 0.8rem;
+      text-align: right;
+      background: var(--card);
+    }
+    td:first-child {
+      text-align: left;
+      font-weight: 500;
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background: var(--card);
+    }
+    .cvr-high { color: var(--green); font-weight: 700; }
+
+    .nav-links {
+      text-align: center;
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .nav-link {
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .nav-link:hover { text-decoration: underline; }
 
     footer {
       text-align: center;
@@ -123,63 +162,36 @@
 
   <header>
     <span class="date-badge">{{ report_date }}</span>
-    <h1>Daily KPI Dashboard</h1>
+    <h1>Daily Central Command Dashboard</h1>
     <p>Auto-updated daily &middot; Last generated {{ generated_at }}</p>
   </header>
 
-  <!-- GA4 -->
-  <div class="section-title">
-    <span class="dot" style="background: var(--ga4)"></span>
-    Google Analytics
-  </div>
+  <!-- KPI Cards -->
   <div class="kpi-grid">
     <div class="kpi-card">
       <div class="label">Sessions</div>
-      <div class="value">{{ "{:,}".format(ga4.sessions | default(0) | int) }}</div>
+      <div class="source">GA4</div>
+      <div class="value">{{ "{:,}".format(sessions | int) }}</div>
     </div>
-    <div class="kpi-card">
-      <div class="label">Conversion Rate</div>
-      <div class="value">{{ "%.2f" | format(ga4.conversion_rate | default(0) | float) }}%</div>
-    </div>
-  </div>
-
-  <!-- Shopify -->
-  <div class="section-title">
-    <span class="dot" style="background: var(--shopify)"></span>
-    Shopify
-  </div>
-  <div class="kpi-grid">
     <div class="kpi-card">
       <div class="label">Orders</div>
-      <div class="value">{{ "{:,}".format(shopify.orders | default(0) | int) }}</div>
+      <div class="source">Shopify</div>
+      <div class="value">{{ "{:,}".format(orders | int) }}</div>
     </div>
     <div class="kpi-card">
       <div class="label">Revenue</div>
-      <div class="value">${{ "{:,.2f}".format(shopify.revenue | default(0) | float) }}</div>
+      <div class="source">Shopify</div>
+      <div class="value">${{ "{:,.2f}".format(revenue | float) }}</div>
     </div>
-    <div class="kpi-card">
-      <div class="label">AOV</div>
-      <div class="value">${{ "{:,.2f}".format(shopify.aov | default(0) | float) }}</div>
-    </div>
-  </div>
-
-  <!-- Meta -->
-  <div class="section-title">
-    <span class="dot" style="background: var(--meta)"></span>
-    Meta Ads
-  </div>
-  <div class="kpi-grid">
     <div class="kpi-card">
       <div class="label">Ad Spend</div>
-      <div class="value">${{ "{:,.2f}".format(meta.spend | default(0) | float) }}</div>
+      <div class="source">Meta</div>
+      <div class="value">${{ "{:,.2f}".format(ad_spend | float) }}</div>
     </div>
     <div class="kpi-card">
-      <div class="label">ROAS</div>
-      <div class="value">{{ "%.2f" | format(meta.roas | default(0) | float) }}x</div>
-    </div>
-    <div class="kpi-card">
-      <div class="label">CPA</div>
-      <div class="value">${{ "{:,.2f}".format(meta.cpa | default(0) | float) }}</div>
+      <div class="label">CVR</div>
+      <div class="source">Orders / Sessions</div>
+      <div class="value">{{ "%.2f" | format(cvr | float) }}%</div>
     </div>
   </div>
 
@@ -188,15 +200,11 @@
     <h2>Trends</h2>
     {% if has_trends %}
     <div class="chart-grid">
-      <div class="chart-card"><img src="assets/ga4_sessions.png" alt="GA4 Sessions"></div>
-      <div class="chart-card"><img src="assets/ga4_conversion_rate.png" alt="GA4 Conversion Rate"></div>
-      <div class="chart-card"><img src="assets/ga4_revenue.png" alt="GA4 Revenue"></div>
-      <div class="chart-card"><img src="assets/shopify_orders.png" alt="Shopify Orders"></div>
-      <div class="chart-card"><img src="assets/shopify_revenue.png" alt="Shopify Revenue"></div>
-      <div class="chart-card"><img src="assets/shopify_aov.png" alt="Shopify AOV"></div>
-      <div class="chart-card"><img src="assets/meta_spend.png" alt="Meta Spend"></div>
-      <div class="chart-card"><img src="assets/meta_roas.png" alt="Meta ROAS"></div>
-      <div class="chart-card"><img src="assets/meta_cpa.png" alt="Meta CPA"></div>
+      <div class="chart-card"><img src="assets/sessions.png" alt="Sessions"></div>
+      <div class="chart-card"><img src="assets/orders.png" alt="Orders"></div>
+      <div class="chart-card"><img src="assets/revenue.png" alt="Revenue"></div>
+      <div class="chart-card"><img src="assets/ad_spend.png" alt="Ad Spend"></div>
+      <div class="chart-card"><img src="assets/cvr.png" alt="CVR"></div>
     </div>
     {% else %}
     <div class="empty-state">
@@ -205,16 +213,44 @@
     {% endif %}
   </div>
 
-  <div style="text-align: center; margin-top: 2rem; display: flex; gap: 2rem; justify-content: center;">
-    <a href="performance.html" style="color: #2563eb; text-decoration: none; font-size: 0.95rem; font-weight: 600;">
-      Performance Log &rarr;
-    </a>
-    <a href="analytics.html" style="color: #4285F4; text-decoration: none; font-size: 0.95rem; font-weight: 600;">
-      GA4 Analytics &rarr;
-    </a>
-    <a href="landing-pages.html" style="color: #4285F4; text-decoration: none; font-size: 0.95rem; font-weight: 600;">
-      Landing Pages &rarr;
-    </a>
+  <!-- Daily Performance Log -->
+  {% if history | length > 0 %}
+  <div class="log-section">
+    <h2>Daily Performance Log</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Sessions</th>
+            <th>Orders</th>
+            <th>Revenue</th>
+            <th>Ad Spend</th>
+            <th>CVR</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in history | reverse %}
+          {% set row_cvr = (row.shopify_orders / row.ga4_sessions * 100) if row.ga4_sessions else 0 %}
+          <tr>
+            <td>{{ row.date }}</td>
+            <td>{{ "{:,.0f}".format(row.ga4_sessions) }}</td>
+            <td>{{ "{:,.0f}".format(row.shopify_orders) }}</td>
+            <td>${{ "{:,.2f}".format(row.shopify_revenue) }}</td>
+            <td>${{ "{:,.2f}".format(row.meta_spend) }}</td>
+            <td class="{{ 'cvr-high' if row_cvr >= 3 else '' }}">{{ "%.2f" | format(row_cvr) }}%</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="nav-links">
+    <a class="nav-link" href="meta-ads.html">Meta Ads &rarr;</a>
+    <a class="nav-link" href="analytics.html">GA4 Analytics &rarr;</a>
+    <a class="nav-link" href="landing-pages.html">Landing Pages &rarr;</a>
   </div>
 
   <footer>

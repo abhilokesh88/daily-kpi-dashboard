@@ -1,7 +1,7 @@
 """
-Generate the static HTML dashboard from the latest data + history.
+Generate the Daily Central Command Dashboard at docs/index.html.
 
-Outputs docs/index.html which GitHub Pages serves automatically.
+Shows the 5 core marketing KPIs, trend charts, and a daily performance log.
 """
 
 import os
@@ -13,8 +13,11 @@ from src.config import OUTPUT_DIR, TEMPLATE_DIR
 
 
 def build(ga4: dict, shopify: dict, meta: dict, history: list[dict]) -> None:
-    """Render the dashboard HTML from the Jinja2 template."""
     os.makedirs(os.path.join(OUTPUT_DIR, "assets"), exist_ok=True)
+
+    sessions = ga4.get("sessions", 0)
+    orders = shopify.get("orders", 0)
+    cvr = round(orders / sessions * 100, 2) if sessions else 0.0
 
     env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
     template = env.get_template("dashboard.html")
@@ -22,9 +25,11 @@ def build(ga4: dict, shopify: dict, meta: dict, history: list[dict]) -> None:
     html = template.render(
         report_date=ga4.get("date") or shopify.get("date") or meta.get("date") or "N/A",
         generated_at=datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC"),
-        ga4=ga4,
-        shopify=shopify,
-        meta=meta,
+        sessions=sessions,
+        orders=orders,
+        revenue=shopify.get("revenue", 0),
+        ad_spend=meta.get("spend", 0),
+        cvr=cvr,
         history=history,
         has_trends=len(history) >= 2,
     )
