@@ -20,7 +20,7 @@ def fetch(target_date: date | None = None) -> dict:
 
     target = target_date or date.today() - timedelta(days=1)
     start = datetime.combine(target, datetime.min.time())
-    end = start + timedelta(days=1)
+    end = start + timedelta(days=2)  # TEMP: 2-day window for debugging
 
     url = f"https://{SHOPIFY_STORE_URL}/admin/api/2024-10/orders.json"
     headers = {"X-Shopify-Access-Token": SHOPIFY_ACCESS_TOKEN}
@@ -29,7 +29,7 @@ def fetch(target_date: date | None = None) -> dict:
         "created_at_min": start.isoformat(),
         "created_at_max": end.isoformat(),
         "limit": 250,
-        "fields": "id,total_price,customer,created_at",
+        "fields": "id,name,total_price,customer,created_at,financial_status,fulfillment_status,cancelled_at",
     }
 
     all_orders: list[dict] = []
@@ -43,7 +43,7 @@ def fetch(target_date: date | None = None) -> dict:
 
     order_count = len(all_orders)
     for o in all_orders:
-        print(f"  [Shopify]   Order #{o.get('id')}: ${o.get('total_price')} created_at={o.get('created_at')}")
+        print(f"  [Shopify]   {o.get('name')} (#{o.get('id')}): ${o.get('total_price')} created={o.get('created_at')} financial={o.get('financial_status')} fulfillment={o.get('fulfillment_status')} cancelled={o.get('cancelled_at')}")
     print(f"  [Shopify] Found {order_count} orders for {target} (query: {start.isoformat()} to {end.isoformat()})")
     revenue = sum(float(o.get("total_price", 0)) for o in all_orders)
     aov = (revenue / order_count) if order_count > 0 else 0.0
