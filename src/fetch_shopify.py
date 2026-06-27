@@ -6,11 +6,24 @@ Metrics:
   - New vs Returning customers
 """
 
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 import requests
 
 from src.config import SHOPIFY_ACCESS_TOKEN, SHOPIFY_STORE_URL
+
+
+def _get_store_timezone() -> timezone:
+    url = f"https://{SHOPIFY_STORE_URL}/admin/api/2024-10/shop.json"
+    headers = {"X-Shopify-Access-Token": SHOPIFY_ACCESS_TOKEN}
+    resp = requests.get(url, headers=headers, params={"fields": "iana_timezone"}, timeout=15)
+    resp.raise_for_status()
+    iana_tz = resp.json()["shop"]["iana_timezone"]
+    try:
+        import zoneinfo
+        return zoneinfo.ZoneInfo(iana_tz)
+    except Exception:
+        return timezone(timedelta(hours=-4))
 
 
 def fetch(target_date: date | None = None) -> dict:
@@ -18,9 +31,11 @@ def fetch(target_date: date | None = None) -> dict:
         print("  [Shopify] Skipped — credentials not configured.")
         return _empty()
 
-    target = target_date or date.today() - timedelta(days=1)
-    start = datetime.combine(target, datetime.min.time())
-    end = start + timedelta(days=2)  # TEMP: 2-day window for debugging
+    store_tz = _get_store_timezone()
+    now_store = datetime.now(store_tz)
+    target = target_date or (now_store.date() - timedelta(days=1))
+    start = datetime.combine(target, datetime.min.time(), tzinfo=store_tz)
+    end = start + timedelta(days=1)
 
     url = f"https://{SHOPIFY_STORE_URL}/admin/api/2024-10/orders.json"
     headers = {"X-Shopify-Access-Token": SHOPIFY_ACCESS_TOKEN}
@@ -29,7 +44,7 @@ def fetch(target_date: date | None = None) -> dict:
         "created_at_min": start.isoformat(),
         "created_at_max": end.isoformat(),
         "limit": 250,
-        "fields": "id,name,total_price,customer,created_at,financial_status,fulfillment_status,cancelled_at",
+        "fields": "id,total_price,customer",
     }
 
     all_orders: list[dict] = []
@@ -42,9 +57,7 @@ def fetch(target_date: date | None = None) -> dict:
         params = {}
 
     order_count = len(all_orders)
-    for o in all_orders:
-        print(f"  [Shopify]   {o.get('name')} (#{o.get('id')}): ${o.get('total_price')} created={o.get('created_at')} financial={o.get('financial_status')} fulfillment={o.get('fulfillment_status')} cancelled={o.get('cancelled_at')}")
-    print(f"  [Shopify] Found {order_count} orders for {target} (query: {start.isoformat()} to {end.isoformat()})")
+    print(f"  [Shopify] Found {order_count} orders for {target} ({start.isoformat()} to {end.isoformat()})")
     revenue = sum(float(o.get("total_price", 0)) for o in all_orders)
     aov = (revenue / order_count) if order_count > 0 else 0.0
 
