@@ -29,7 +29,7 @@ def fetch(target_date: date | None = None) -> dict:
         "created_at_min": start.isoformat(),
         "created_at_max": end.isoformat(),
         "limit": 250,
-        "fields": "id,total_price,customer",
+        "fields": "id,total_price,customer,created_at",
     }
 
     all_orders: list[dict] = []
@@ -42,6 +42,8 @@ def fetch(target_date: date | None = None) -> dict:
         params = {}
 
     order_count = len(all_orders)
+    for o in all_orders:
+        print(f"  [Shopify]   Order #{o.get('id')}: ${o.get('total_price')} created_at={o.get('created_at')}")
     print(f"  [Shopify] Found {order_count} orders for {target} (query: {start.isoformat()} to {end.isoformat()})")
     revenue = sum(float(o.get("total_price", 0)) for o in all_orders)
     aov = (revenue / order_count) if order_count > 0 else 0.0
