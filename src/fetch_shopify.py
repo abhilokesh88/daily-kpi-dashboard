@@ -42,6 +42,7 @@ def fetch(target_date: date | None = None) -> dict:
         params = {}
 
     order_count = len(all_orders)
+    print(f"  [Shopify] Found {order_count} orders for {target} (query: {start.isoformat()} to {end.isoformat()})")
     revenue = sum(float(o.get("total_price", 0)) for o in all_orders)
     aov = (revenue / order_count) if order_count > 0 else 0.0
 
