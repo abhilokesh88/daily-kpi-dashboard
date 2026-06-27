@@ -6,7 +6,7 @@ Metrics:
   - New vs Returning customers
 """
 
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, timedelta
 
 import requests
 
@@ -19,7 +19,7 @@ def fetch(target_date: date | None = None) -> dict:
         return _empty()
 
     target = target_date or date.today() - timedelta(days=1)
-    start = datetime.combine(target, datetime.min.time(), tzinfo=timezone.utc)
+    start = datetime.combine(target, datetime.min.time())
     end = start + timedelta(days=1)
 
     url = f"https://{SHOPIFY_STORE_URL}/admin/api/2024-10/orders.json"
