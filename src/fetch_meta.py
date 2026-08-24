@@ -39,7 +39,9 @@ def fetch(target_date: date | None = None) -> dict:
     }
 
     resp = requests.get(url, params=params, timeout=30)
-    resp.raise_for_status()
+    if not resp.ok:
+        print(f"  [Meta] API error {resp.status_code}: {resp.text[:200]}")
+        return _empty(date_str)
     data = resp.json().get("data", [])
 
     if not data:
