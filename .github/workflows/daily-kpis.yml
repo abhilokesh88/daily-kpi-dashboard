@@ -1,12 +1,10 @@
 name: Daily KPI Report
 
 on:
-  schedule:
-    # Runs every day at 8:00 AM UTC (adjust to your timezone)
-    # e.g. 8 AM UTC = 3 AM EST / 12 AM PST
-    - cron: "0 8 * * *"
+  # DISABLED — replaced by external operator-built dashboard
+  # schedule:
+  #   - cron: "0 8 * * *"
 
-  # Lets you trigger manually from the GitHub Actions tab
   workflow_dispatch:
 
 permissions:

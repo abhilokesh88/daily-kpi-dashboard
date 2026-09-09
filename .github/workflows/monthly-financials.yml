@@ -1,9 +1,9 @@
 name: Monthly Financial Report
 
 on:
-  schedule:
-    # Runs on the 7th of every month at 8:00 AM UTC (3:00 AM EST)
-    - cron: "0 8 7 * *"
+  # DISABLED — replaced by external operator-built dashboard
+  # schedule:
+  #   - cron: "0 8 7 * *"
 
   workflow_dispatch:
 
